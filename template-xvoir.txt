@@ -1,0 +1,21 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.03 [en] (X11; I; HP-UX B.10.20 9000/712) [Netscape]">
+</HEAD>
+<BODY>
+
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+|----|----|-----|-----|-----|-----|-----|-----|------------|------------|-----|--------|-|---------|---------|---------|---------|-|---------|------
+NOMVAR ID&nbsp;&nbsp; IP1&nbsp;&nbsp; IP2&nbsp;&nbsp; IP3&nbsp;&nbsp;&nbsp; NI&nbsp;&nbsp;&nbsp; NJ&nbsp;&nbsp;&nbsp; NK ETIKET&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DATE&nbsp;&nbsp;&nbsp; DEET&nbsp; NPAS&nbsp;&nbsp;&nbsp; GR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IG1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IG2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IG3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; IG4 DTY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SWA&nbsp;&nbsp;&nbsp; LNG
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #&nbsp; ###&nbsp;&nbsp; ###&nbsp;&nbsp; ###&nbsp;&nbsp; ####&nbsp; ####&nbsp; ####&nbsp; #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ############&nbsp;&nbsp;&nbsp; ####&nbsp;&nbsp;&nbsp; ##&nbsp;&nbsp;&nbsp; ####&nbsp; #######&nbsp;&nbsp; #######&nbsp;&nbsp; #######&nbsp;&nbsp; #######&nbsp;&nbsp; #&nbsp;&nbsp; ######&nbsp;&nbsp; ####&nbsp;&nbsp;&nbsp;
+****&nbsp;&nbsp; ** ***** ***** ***** ***** ***** ***** ************ *********&nbsp;&nbsp; ***** *****&nbsp;&nbsp;&nbsp;&nbsp; * ********* ********* ********* ********* *** ******** ******
+AAAA&nbsp;&nbsp; AA IIIII IIIII IIIII IIIII IIIII IIIII AAAAAAAAAAAA IIIIIIIII&nbsp;&nbsp; IIIII IIIII&nbsp;&nbsp;&nbsp;&nbsp; A FFFFFFFFF FFFFFFFFF FFFFFFFFF FFFFFFFFF AII IIIIIIII IIIIII
+1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+</PRE>
+
+</BODY>
+</HTML>

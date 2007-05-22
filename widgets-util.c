@@ -1,46 +1,28 @@
+/* RMNLIB - Library of useful routines for C and FORTRAN programming
+ * Copyright (C) 1975-2001  Division de Recherche en Prevision Numerique
+ *                          Environnement Canada
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation,
+ * version 2.1 of the License.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
 #include <xinit.h>
-#include <c_wgl.h>
 #include <Xm/Xm.h>
 
 extern SuperWidgetStruct SuperWidget;
 
-InitPixelsCouleursDeBase(indCouleurs)
-Pixel indCouleurs[];
-{
-   Display *disp;
-   Colormap cmap;
-   XColor exact, couleurs[16];
-   
-   disp = XtDisplay(SuperWidget.topLevel);
-   cmap = DefaultColormap(disp, DefaultScreen(disp));
-   
-   XAllocNamedColor(disp, cmap, "black",   &exact, &couleurs[NOIR]);
-   indCouleurs[NOIR] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "red",     &exact, &couleurs[ROUGE]);
-   indCouleurs[ROUGE] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "darkgreen",   &exact, &couleurs[VERT]);
-   indCouleurs[VERT] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "yellow",  &exact, &couleurs[JAUNE]);
-   indCouleurs[JAUNE] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "blue",    &exact, &couleurs[BLEU]);
-   indCouleurs[BLEU] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "magenta", &exact, &couleurs[MAGNTA]);
-   indCouleurs[MAGNTA] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "cyan",    &exact, &couleurs[CYAN]);
-   indCouleurs[CYAN] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "white",   &exact, &couleurs[BLANC]);
-   indCouleurs[BLANC] = exact.pixel;
-   
-   XAllocNamedColor(disp, cmap, "gray",   &exact, &couleurs[BLANC]);
-   indCouleurs[8] = exact.pixel;
-   }
 
 InvertWidget(w)
 Widget w;
@@ -65,23 +47,47 @@ Widget w;
 
 
 
+ActiverWidget(w)
+Widget w;
+{
+   int i;
+   Arg args[1];
+
+   i = 0;
+   XtSetArg(args[i], XmNsensitive, True); i++;
+   XtSetValues(w, args, i);
+
+   FlusherTousLesEvenements();
+   }
+
+
+DesactiverWidget(w)
+Widget w;
+{
+   int i;
+   Arg args[1];
+
+   i = 0;
+   XtSetArg(args[i], XmNsensitive, False); i++;
+   XtSetValues(w, args, i);
+
+   FlusherTousLesEvenements();
+   }
+
+
+
 AjusterPositionForme(w, wp)
 Widget w, wp;
 {
    Position i,x,y,wWidth,wHeight, wpWidth, wpHeight;
    Position displayWidth, displayHeight;
-   XWindowAttributes xwat;
-
    Arg args[4];
 
    displayHeight = DisplayHeight(XtDisplay(w), DefaultScreen(XtDisplay(w)));
    displayWidth  = DisplayWidth(XtDisplay(w), DefaultScreen(XtDisplay(w)));
    
-   XGetWindowAttributes(XtDisplay(w), XtWindow(wp), &xwat);
-
-   x = xwat.x;
-   y = xwat.y;
-
+   XtTranslateCoords(wp, 0, 0, &x, &y);
+   
    i = 0;
    XtSetArg(args[i], XmNwidth, &wpWidth); i++;
    XtSetArg(args[i], XmNheight,&wpHeight); i++;

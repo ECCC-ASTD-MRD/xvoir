@@ -1,28 +1,31 @@
-include Makefile_$(ARCH)$(ABI)
+include /usr/local/env/armnlib/include/$(ARCH)$(ABI)/Makefile_addons
 
 .SUFFIXES : 
 
-.SUFFIXES : .ftn .f .c .o 
+.SUFFIXES : .ftn90 .f .c .o 
 
 SHELL = /bin/sh
 
 CPP = /lib/cpp
 
-RECLIB = $(REC)/lib/$(ARCH)$(ABI)/librec.a
+REC_UTILLIB = $(HOME)/userlibs/$(ARCH)$(ABI)/librec_util.a
 
 FFLAGS = 
 
-CFLAGS = -I/usr/include/Motif1.2R6 -I/usr/X11R6/include -I$(ARMNLIB)/include -I$(HOME)/../yrc/src/include -DX_WGL
+CFLAGS = -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL -Wall -Wno-trigraphs
 
+#CFLAGS = -I/usr/include/Motif1.2R6 -I/usr/X11R6/include -I$(ARMNLIB)/include -I$(HOME)/../yrc/src/include -DX_WGL
+
+OPTIMIZ = -O 0 -debug
 OPTIMIZ = -O 2
 
-CPPFLAGS = -I$(ARMNLIB)/include =-I$(HOME)/src/include -DX_WGL
+CPPFLAGS = -I$(ARMNLIB)/include =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 
 default: xvoir
 
-.ftn.o:
+.ftn90.o:
 	r.compile -arch $(ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
 
 .c.o:
@@ -41,25 +44,21 @@ default: xvoir
 	ar rv $@ $*.o
 	rm -f $*.o
 
-FTNDECKS=  xfsl-voir.ftn     xvoir.ftn
+FTNDECKS=  get_nbrecs_actifs.ftn90 xfsl-xvoir-2000.ftn90 xvoir.ftn90
 
-FDECKS= xfsl-voir.f     xvoir.f
+CDECKS= flush.c langue.c  parent.c  strutil.c  xinit.c  xrecsel.c widgets-util.c
 
-CDECKS= aux.c   flush.c   langue.c   parent.c    strutil.c   widgets-util.c   xinit.c   xrecsel.c
 
-OBJECTS= aux.o  flush.o  langue.o  parent.o  strutil.o widgets-util.o  xfsl-voir.o xinit.o xrecsel.o  xvoir.o
+OBJECTS= get_nbrecs_actifs.o xfsl-xvoir-2000.o xvoir.o  \
+flush.o langue.o  parent.o  strutil.o  xinit.o  xrecsel.o widgets-util.o
 
 COMDECKS= xfsl-voir.cdk   xfsl.cdk
 
-xfsl-voir.o: 	xfsl-voir.ftn xfsl-voir.cdk 
-xvoir.o:	xvoir.ftn 
-
-
-obj: $(CDECKS) $(FDECKS) $(OBJECTS)
-#Produire les fichiers objets (.o) pour tous les fichiers
-
 xvoir: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libpath $(REC)/lib/$(ARCH)$(ABI) /usr/lib/Motif1.2_R6 /usr/lib/X11R6	/usr/X11R6/lib -libappl wglx Xm Xt X11 m -librmn
+	r.build -obj $(OBJECTS) -o xvoir -libappl  StaticXm StaticMrm Xmu Xp Xt Xext X11 m -librmn rmn_008
+
+xvoir-IRIX: $(OBJECTS)
+	r.build -obj $(OBJECTS) -o xvoir -libappl Xm Xt X11 -librmn rmn_008
 
 clean:
-	/bin/rm -f *.f *.o xvoir
+	/bin/rm -f *.f90 *.o xvoir

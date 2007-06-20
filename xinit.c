@@ -28,8 +28,11 @@
  **/
 
 #include <xinit.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <rpnmacros.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data"
 #define INITIALISATION_COMPLETEE 101

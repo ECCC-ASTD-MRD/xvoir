@@ -20,6 +20,7 @@
 
 #include <rpnmacros.h>
 #include <xinit.h>
+#include <stdlib.h>
 
 int f77name(getulng)()
 {

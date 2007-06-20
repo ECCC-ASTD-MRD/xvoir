@@ -12,12 +12,11 @@ REC_UTILLIB = $(HOME)/userlibs/$(ARCH)$(ABI)/librec_util.a
 
 FFLAGS = 
 
-CFLAGS = -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL -Wall -Wno-trigraphs
+CFLAGS = -I/opt/include -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
 
-#CFLAGS = -I/usr/include/Motif1.2R6 -I/usr/X11R6/include -I$(ARMNLIB)/include -I$(HOME)/../yrc/src/include -DX_WGL
 
-OPTIMIZ = -O 0 -debug
 OPTIMIZ = -O 2
+OPTIMIZ = -O 0 -debug
 
 CPPFLAGS = -I$(ARMNLIB)/include =-I$(REC)/include -DX_WGL
 
@@ -46,16 +45,22 @@ default: xvoir
 
 FTNDECKS=  get_nbrecs_actifs.ftn90 xfsl-xvoir-2000.ftn90 xvoir.ftn90
 
-CDECKS= flush.c langue.c  parent.c  strutil.c  xinit.c  xrecsel.c widgets-util.c
+CDECKS= aux.c flush.c langue.c  parent.c  strutil.c  xinit.c  xrecsel.c widgets-util.c
 
 
-OBJECTS= get_nbrecs_actifs.o xfsl-xvoir-2000.o xvoir.o  \
+OBJECTS= aux.o get_nbrecs_actifs.o xfsl-xvoir-2000.o xvoir.o  \
 flush.o langue.o  parent.o  strutil.o  xinit.o  xrecsel.o widgets-util.o
 
 COMDECKS= xfsl-voir.cdk   xfsl.cdk
 
+xvoir-AIX: $(OBJECTS)
+	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 m jpeg png -librmn rmnbeta -libpath /opt/lib
+
+xvoir-IRIX64: $(OBJECTS)
+	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn rmnbeta -libpath /opt/lib
+
 xvoir: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl  StaticXm StaticMrm Xmu Xp Xt Xext X11 m -librmn rmn_008
+	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmnbeta -libpath /opt/lib
 
 xvoir-IRIX: $(OBJECTS)
 	r.build -obj $(OBJECTS) -o xvoir -libappl Xm Xt X11 -librmn rmn_008

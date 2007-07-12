@@ -12,7 +12,9 @@ REC_UTILLIB = $(HOME)/userlibs/$(ARCH)$(ABI)/librec_util.a
 
 FFLAGS = 
 
-CFLAGS = -I/opt/include -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
+CFLAGS = -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
+
+CFLAGS = -I/opt/xm/include -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
 
 
 OPTIMIZ = -O 2
@@ -60,7 +62,7 @@ xvoir-IRIX64: $(OBJECTS)
 	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn rmnbeta -libpath /opt/lib
 
 xvoir: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmnbeta -libpath /opt/lib
+	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmnbeta -libpath /opt/xm/lib
 
 xvoir-IRIX: $(OBJECTS)
 	r.build -obj $(OBJECTS) -o xvoir -libappl Xm Xt X11 -librmn rmn_008

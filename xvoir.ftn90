@@ -99,6 +99,7 @@
          endif
  34   continue
 
+      nbrecs = 0
       nrecs = 0
       do 35 i=1,niun
          ier = FSTOUV(lnkdiun(i), 'RND')

@@ -28,11 +28,11 @@
  **/
 
 #include <xinit.h>
-#include <stdio.h>
 #include <ctype.h>
 #include <rpnmacros.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data"
 #define INITIALISATION_COMPLETEE 101
@@ -47,9 +47,7 @@ static char *defaultResourceDir = NULL;
 ************************************************************
 **/
 
-int f77name(xinit)(nomApplication, lenNomApplication)
-char nomApplication[];
-int  lenNomApplication;
+int f77name(xinit)(char nomApplication[], int  lenNomApplication)
 {
    char copieNomApplication[256];
    
@@ -65,8 +63,7 @@ int  lenNomApplication;
 ************************************************************
 **/
 
-int Xinit(nomApplication)
-char nomApplication[];
+int Xinit(char nomApplication[])
 {
    Arg args[10];
    static char **argv;  

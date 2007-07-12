@@ -2276,7 +2276,7 @@ MessageChargement(wordint nbRecs1, wordint nbRecs2)
    i = 0;
    XtSetArg(args[i], XmNlabelString, xmMessage); i++;
    XtSetValues(xs[wi].infoLabel, args, i);
-   /*FlusherTousLesEvenements();*/
+   FlusherTousLesEvenements();
    
    XmStringFree(xmMessage);
 
@@ -2831,7 +2831,7 @@ void XSelectstdInserer(char *tableau, wordint table[][3], wordint nbrecs)
 
       PositionnerMenubar();
       DesactiverSelWidgets();
-      /*FlusherTousLesEvenements();*/
+      FlusherTousLesEvenements();
       }
 
    if (xs[wi].lastNbRecs == 0)  /** && xs[wi].nbRecs != 0) **/

@@ -1,4 +1,4 @@
-include $(ARMNLIB)/include/$(EC_ARCH)$(ABI)/Makefile_addons
+include $(ARMNLIB)/include/$(BASE_ARCH)$(ABI)/Makefile_addons
 
 .SUFFIXES : 
 
@@ -24,24 +24,26 @@ CPPFLAGS = -I$(ARMNLIB)/include =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 
+VER = 2.0
+
 default: xvoir
 
 .ftn90.o:
-	r.compile -arch $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
+	s.compile -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
 
 .c.o:
-	r.compile -arch $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(CFLAGS)" -src $<
+	s.compile -abi $(ABI) $(OPTIMIZ) -opt "=$(CFLAGS)" -src $<
 
 .f.o:
-	r.compile -arch $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
+	s.compile -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
 
 .c.a:
-	r.compile -arch $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(CFLAGS)" -src $<
+	s.compile $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(CFLAGS)" -src $<
 	ar rv $@ $*.o
 	rm -f $*.o
 
 .f.a:
-	r.compile -arch $(EC_ARCH) -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
+	s.compile -abi $(ABI) $(OPTIMIZ) -opt "=$(FFLAGS)" -src $<
 	ar rv $@ $*.o
 	rm -f $*.o
 
@@ -56,16 +58,16 @@ flush.o langue.o  parent.o  strutil.o  xinit.o  xrecsel.o widgets-util.o
 COMDECKS= xfsl-voir.cdk   xfsl.cdk
 
 xvoir-AIX: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 m jpeg png -librmn rmnbeta -libpath /opt/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 m jpeg png -librmn rmn_013 -libpath /opt/lib
 
 xvoir-IRIX64: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn rmnbeta -libpath /opt/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn rmn_013 -libpath /opt/lib
 
 xvoir: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmnbeta -libpath /opt/xm/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmn_013 -libpath /opt/xm/lib /usr/lib
 
 xvoir-IRIX: $(OBJECTS)
-	r.build -obj $(OBJECTS) -o xvoir -libappl Xm Xt X11 -librmn rmn_008
+	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl Xm Xt X11 -librmn rmn_013
 
 clean:
-	/bin/rm -f *.f90 *.o xvoir
+	/bin/rm -f *.f90 *.o xvoir_$(VER)-$(BASE_ARCH)

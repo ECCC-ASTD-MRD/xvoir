@@ -24,7 +24,9 @@ CPPFLAGS = -I$(ARMNLIB)/include =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 
-VER = 2.0
+VER = 2.1
+
+LIBRMN = rmn_014
 
 default: xvoir
 
@@ -58,16 +60,16 @@ flush.o langue.o  parent.o  strutil.o  xinit.o  xrecsel.o widgets-util.o
 COMDECKS= xfsl-voir.cdk   xfsl.cdk
 
 xvoir-AIX: $(OBJECTS)
-	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 m jpeg png -librmn rmn_013 -libpath /opt/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 m jpeg png -librmn $(LIBRMN) -libpath /opt/lib
 
 xvoir-IRIX64: $(OBJECTS)
-	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn rmn_013 -libpath /opt/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn $(LIBRMN) -libpath /opt/lib
 
 xvoir: $(OBJECTS)
-	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn rmn_013 -libpath /opt/xm/lib /usr/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn $(LIBRMN) -libpath /opt/xm/lib /usr/lib
 
 xvoir-IRIX: $(OBJECTS)
-	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl Xm Xt X11 -librmn rmn_013
+	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl Xm Xt X11 -librmn $(LIBRMN)
 
 clean:
 	/bin/rm -f *.f90 *.o xvoir_$(VER)-$(BASE_ARCH)

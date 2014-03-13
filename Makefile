@@ -66,7 +66,7 @@ xvoir-IRIX64: $(OBJECTS)
 	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl  Xm Mrm Xmu Xt Xext X11 m jpeg png -librmn $(LIBRMN) -libpath /opt/lib
 
 xvoir: $(OBJECTS)
-	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xmu Xp Xt Xext X11 Xft Xrender m jpeg png -librmn $(LIBRMN) -libpath /opt/xm/lib /usr/lib
+	s.compile -obj $(OBJECTS) -o xvoir_$(VER)-$(BASE_ARCH) -libappl  Xm Mrm Xp Xt Xext X11 Xft Xrender m jpeg png -librmn $(LIBRMN) -libpath /opt/xm/lib /usr/lib
 
 xvoir-IRIX: $(OBJECTS)
 	s.compile -obj $(OBJECTS) -o xvoir_$(BASE_ARCH) -libappl Xm Xt X11 -librmn $(LIBRMN)

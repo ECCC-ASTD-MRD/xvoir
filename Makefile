@@ -1,4 +1,4 @@
-include $(ARMNLIB)/include/$(BASE_ARCH)$(ABI)/Makefile_addons
+include $(RPN_TEMPLATE_LIBS)/include/$(BASE_ARCH)$(ABI)/Makefile_addons
 
 .SUFFIXES : 
 
@@ -12,15 +12,15 @@ REC_UTILLIB = $(HOME)/userlibs/$(EC_ARCH)$(ABI)/librec_util.a
 
 FFLAGS = 
 
-CFLAGS = -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
+CFLAGS = -I/usr/X11R6/include -I../include -DX_WGL  
 
-CFLAGS = -I/opt/xm/include -I/usr/X11R6/include -I$(ARMNLIB)/include -I../include -DX_WGL  
+CFLAGS = -I/opt/xm/include -I/usr/X11R6/include -I../include -DX_WGL  
 
 
 OPTIMIZ = -O 2
 OPTIMIZ = -O 0 -debug
 
-CPPFLAGS = -I$(ARMNLIB)/include =-I$(REC)/include -DX_WGL
+CPPFLAGS =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 

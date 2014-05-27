@@ -34,7 +34,8 @@
 #include <string.h>
 #include <stdio.h>
 
-#define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data"
+/* #define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data" */
+#define DEFAULT_RESOURCE_DIR ""
 #define INITIALISATION_COMPLETEE 101
 
 static String RessourcesDeDefaut[] = {  NULL, };
@@ -79,17 +80,16 @@ int Xinit(char nomApplication[])
       return 1;
    else
       {
-      envvar = (char *) getenv("ARMNLIB");
+      envvar = (char *) getenv("ARMNLIB_DATA");
       if (NULL == envvar)
 	 {
-	 printf("La variable d'environnement ARMNLIB n'est pas definie...\n Impossible de continuer\n");
+	 printf("La variable d'environnement ARMNLIB_DATA n'est pas definie...\n Impossible de continuer\n");
 	 exit(-1);
 	 }
       
       strcpy(xapplresdir, "XAPPLRESDIR=");
-      strcat(xapplresdir, (char *) (getenv("ARMNLIB")));
-      strcat(xapplresdir, "/data");
-	
+      strcat(xapplresdir, (char *) (getenv("ARMNLIB_DATA")));
+
       envvar = (char *) xapplresdir;
       putenv(envvar);
 

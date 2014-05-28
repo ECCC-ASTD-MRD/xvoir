@@ -18,7 +18,7 @@ CFLAGS = -I/opt/xm/include -I/usr/X11R6/include -I../include -DX_WGL
 
 
 OPTIMIZ = -O 2
-OPTIMIZ = -O 0 -debug
+$(info OPTIMIZ is ${OPTIMIZ})
 
 CPPFLAGS =-I$(REC)/include -DX_WGL
 
@@ -26,7 +26,7 @@ CPPFLAGS =-I$(REC)/include -DX_WGL
 
 VER = 2.1
 
-LIBRMN = rmn_014
+LIBRMN = 
 
 default: xvoir
 

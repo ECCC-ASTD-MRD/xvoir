@@ -24,9 +24,9 @@ CPPFLAGS =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 
-VER = 2.1
+VER = 2.2
 
-LIBRMN = 
+LIBRMN =
 
 default: xvoir
 

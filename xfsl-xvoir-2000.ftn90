@@ -274,7 +274,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
     else if (datyp.eq.2) then
         cdatyp = 'I'
     else if (datyp.eq.4) then
-        cdatyp = 'U'
+        cdatyp = 'S'
     else if (datyp.eq.5) then
         cdatyp='E'
     else if (datyp.eq.134) then
@@ -282,7 +282,9 @@ integer function xfslactv(slkeys, nslkeys, winind)
     else if (datyp.eq.130) then
         cdatyp='i'
     else if (datyp.eq.132) then
-        cdatyp='u'
+        cdatyp='s'
+    else if (datyp.eq.133) then
+        cdatyp='e'
     else
         cdatyp = 'C'
     endif

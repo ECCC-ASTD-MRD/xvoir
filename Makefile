@@ -24,7 +24,7 @@ CPPFLAGS =-I$(REC)/include -DX_WGL
 
 .PRECIOUS:
 
-VER = 2.3
+VER = 2.4
 
 LIBRMN =
 

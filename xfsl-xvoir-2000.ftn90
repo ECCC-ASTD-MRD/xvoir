@@ -63,7 +63,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
       write(tableau(mod(i-1,64)), 10) NOMVAR, TYPVAR, IP1, IP2, IP3, NI, NJ, NK, ETIKET, &
              yyyymmdd,hhmmssss, deet, npas, grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
     else
-      call convip( ip1, p, kind, -1, string, .true.)
+      call convip_plus( ip1, p, kind, -1, string, .true.)
       if (grtyp.ne.'Z'.and.grtyp.ne.'Y') then
           call cigaxg(grtyp,xg1,xg2,xg3,xg4,ig1,ig2,ig3,ig4)
       else
@@ -255,7 +255,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
 !      endif
 !      call newdate(date0,yyyymmdd,hhmmssss,-3)
 !      hhmmssss = hhmmssss / 100
-!      call convip( ip1, p, kind, -1, string, .true.)
+!      call convip_plus( ip1, p, kind, -1, string, .true.)
 !      write(tableau(mod(i-1,64)), 11) NOMVAR,TYPVAR,string,IP2,IP3,NI, NJ, NK, ETIKET, &
 !           yyyymmdd,hhmmssss, deet, npas,grtyp, xg1, xg2, xg3, xg4, cdatyp, nbits
 !   endif

@@ -11,7 +11,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   character*2 typvar
   character*1  grtyp, cdatyp
   character*12 etiket
-  character*148  titre
+  character*151  titre
   
   integer key, date0, deet, npas, ni, nj, nk, nbits, datyp 
   integer ip1, ip2, ip3, swa, lng, dltf, ubc
@@ -107,9 +107,9 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
 4 format(3i16)
 5 format(128a)
 6 format(40a)
-10 FORMAT(A4, X, A2, X, I9, X, I9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, X, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
-11 FORMAT(A4, X, A2, X, a9, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, g9.3, x, g9.3, x, g9.3, x, g9.3, x, a1,i2.2)
-12 FORMAT(A4, X, A2, X, a9, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
+10 FORMAT(A4, X, A2, X, I12, X, I9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, X, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
+11 FORMAT(A4, X, A2, X, a12, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, g9.3, x, g9.3, x, g9.3, x, g9.3, x, a1,i2.2)
+12 FORMAT(A4, X, A2, X, a12, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
   
   return
 end function xfslvoir2000
@@ -174,7 +174,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
      
      idents(1) =  'NOMV'
      idents(2)  = 'TV'
-     idents(3)  = '---IP1---'
+     idents(3)  = '----IP1-----'
      idents(4)  = '---IP2---'
      idents(5)  = '---IP3---'
      idents(6)  = '-NI--'

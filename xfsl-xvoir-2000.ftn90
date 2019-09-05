@@ -11,7 +11,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   character*2 typvar
   character*1  grtyp, cdatyp
   character*12 etiket
-  character*151  titre
+  character*172  titre
   
   integer key, date0, deet, npas, ni, nj, nk, nbits, datyp 
   integer ip1, ip2, ip3, swa, lng, dltf, ubc
@@ -73,10 +73,10 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
           xg4 = ig4
       endif     
       if (grtyp.ne.'Z'.and.grtyp.ne.'Y') then
-          write(tableau(mod(i-1,64)), 11) NOMVAR,TYPVAR,string,IP2,IP3,NI, NJ, NK, ETIKET, &
+          write(tableau(mod(i-1,64)), 11) NOMVAR,TYPVAR,adjustr(string),IP2,IP3,NI, NJ, NK, ETIKET, &
             yyyymmdd,hhmmssss, deet, npas,grtyp, xg1, xg2, xg3, xg4, cdatyp, nbits
       else
-          write(tableau(mod(i-1,64)), 12) NOMVAR,TYPVAR, string,IP2,IP3,NI, NJ, NK, ETIKET, &
+          write(tableau(mod(i-1,64)), 12) NOMVAR,TYPVAR, adjustr(string),IP2,IP3,NI, NJ, NK, ETIKET, &
             yyyymmdd,hhmmssss, deet, npas,grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
       endif
     endif
@@ -107,9 +107,9 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
 4 format(3i16)
 5 format(128a)
 6 format(40a)
-10 FORMAT(A4, X, A2, X, I12, X, I9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, X, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
-11 FORMAT(A4, X, A2, X, a12, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, g9.3, x, g9.3, x, g9.3, x, g9.3, x, a1,i2.2)
-12 FORMAT(A4, X, A2, X, a12, X, i9, X, I9, X, I5, X, I5, X, I5, X, A12, X, i8.8,i7.6, x, i6, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
+10 FORMAT(A4, X, A2, X, I12, X, I12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
+11 FORMAT(A4, X, A2, X, a12, X, i12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, g9.3, x, g9.3, x, g9.3, x, g9.3, x, a1,i2.2)
+12 FORMAT(A4, X, A2, X, a12, X, i12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
   
   return
 end function xfslvoir2000
@@ -162,8 +162,8 @@ integer function xfslactv(slkeys, nslkeys, winind)
 !   c     **                                                            **
 !   c     ****************************************************************
    
-! NOMV TV IP1       IP2       IP3      NI    NJ    NK    ETIQUETTE    YYYYMMDD HHMMSS DEET  NPAS    G IG1         IG2      IG3      IG4      DTY
-! 1234 12 123456789 123456789 1234567891234561234561234561234567890abc12345678 123456 12345 1234567 1 12312345678 12345678 12345678 12345678 123
+! NOMV TV ----IP1----- ----IP2----- ----IP3----- --NI-- --NJ-- --NK-- -ETIQUETTE-  YYYYMMDD HHMMSS DEET  -NPAS-  G --IG1--  --IG2--  --IG3--  --IG4--  DTY
+! 1234 12 123456789ABC 123456789ABC 123456789ABC 123456 123456 123456 123456789abc 12345678 123456 12345 1234567 1 12345678 12345678 12345678 12345678 123
    
    subroutine initidv(idents)
      character*16 idents(*)
@@ -175,11 +175,11 @@ integer function xfslactv(slkeys, nslkeys, winind)
      idents(1) =  'NOMV'
      idents(2)  = 'TV'
      idents(3)  = '----IP1-----'
-     idents(4)  = '---IP2---'
-     idents(5)  = '---IP3---'
-     idents(6)  = '-NI--'
-     idents(7)  = '-NJ--'
-     idents(8)  = '-NK--'
+     idents(4)  = '----IP2-----'
+     idents(5)  = '----IP3-----'
+     idents(6)  = '--NI--'
+     idents(7)  = '--NJ--'
+     idents(8)  = '--NK--'
      idents(9)  = '---ETIKET---'
      idents(10) = 'YYYYMMDD'
      idents(11) = 'HHMMSS'
@@ -196,14 +196,14 @@ integer function xfslactv(slkeys, nslkeys, winind)
    end subroutine initidv
 
    subroutine inittabv(tableau, table, len)
-     character*150 tableau(*)
+     character*172 tableau(*)
      integer table(3, *)
      integer len
      integer sumlen
      integer i
      
      integer reclen(20)
-     data reclen /5,3,10,10,10,6,6,6,13,9,7,7,8,2,10,10,10,10,3,0/
+     data reclen /5,3,13,13,13,7,7,7,13,9,7,6,8,2,10,10,10,10,3,0/
      
      
      sumlen       = 0

@@ -11,7 +11,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   character*2 typvar
   character*1  grtyp, cdatyp
   character*12 etiket
-  character*172  titre
+  character*158  titre
   
   integer key, date0, deet, npas, ni, nj, nk, nbits, datyp 
   integer ip1, ip2, ip3, swa, lng, dltf, ubc
@@ -196,7 +196,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
    end subroutine initidv
 
    subroutine inittabv(tableau, table, len)
-     character*172 tableau(*)
+     character*158 tableau(*)
      integer table(3, *)
      integer len
      integer sumlen

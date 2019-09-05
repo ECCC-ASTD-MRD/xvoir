@@ -1,11 +1,11 @@
   integer ligne,maxrecs,maxdes
   
-  parameter (ligne  = 172)
+  parameter (ligne  = 158)
   parameter (maxrecs= 64)
   parameter (maxdes = 24)
   
   character*16 idents 
-  character*172 tableau
+  character*158 tableau
   common /xfscinf/ idents(maxdes), tableau(0:maxrecs)
   
   integer table, recs,nrecs, nbrecs, nbdes

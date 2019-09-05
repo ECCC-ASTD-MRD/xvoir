@@ -32,7 +32,7 @@
       character*2 typvar 
       character*1 grtyp,cdatyp
       character*12 etiket
-      character*151 titre
+      character*158 titre
 
       
       INTEGER KEY, DATE0, DEET, NPAS, NI, NJ, NK, NBITS, DATYP 

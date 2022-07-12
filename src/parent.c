@@ -18,42 +18,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <rpnmacros.h>
-#include <xinit.h>
-#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-int f77name(getulng)()
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/Intrinsic.h>
+#include <X11/StringDefs.h>
+
+#include "xinit.h"
+
+extern SuperWidgetStruct SuperWidget;
+
+Widget TrouverWidgetParent(eventWindow)
+Window  eventWindow;
 {
-   return c_getulng();
-   }
+   Display *display;
+   Widget   widgetCourant, widgetParent;
+   
+   display = XtDisplay(SuperWidget.topLevel);
+   widgetCourant = XtWindowToWidget(display, eventWindow);
 
-
-int c_getulng()
-{
-   char *langue;
-   static int langueInitialisee = 0;
-   static int langueUsager;
-
-
-   if (langueInitialisee == 0)
+   if (widgetCourant == NULL)
+      return NULL;
+   
+   widgetParent = XtParent(widgetCourant);
+   while (widgetParent != NULL)
       {
-      langue = (char *)getenv("CMCLNG");
-      if (langue != NULL)
-	 {
-	 if (0 == strcmp(langue, "english"))
-	    langueUsager = 1;
-	 else
-	    langueUsager = 0;
-	 }
-      else
-	 {
-	 langueUsager = 0;
-	 }
-      
-      langueInitialisee = 1;
-      }
+      widgetCourant = widgetParent;
+      widgetParent = XtParent(widgetCourant);
+      };
    
-   return langueUsager;
-   
+   return widgetCourant;
    }
-

@@ -18,36 +18,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <stdio.h>
-#include <string.h>
-
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <X11/Intrinsic.h>
-#include <X11/StringDefs.h>
-
-#include <xinit.h>
+#include "xinit.h"
 
 extern SuperWidgetStruct SuperWidget;
 
-Widget TrouverWidgetParent(eventWindow)
-Window  eventWindow;
+FlusherTousLesEvenements()
 {
-   Display *display;
-   Widget   widgetCourant, widgetParent;
+   XEvent theEvent;
    
-   display = XtDisplay(SuperWidget.topLevel);
-   widgetCourant = XtWindowToWidget(display, eventWindow);
-
-   if (widgetCourant == NULL)
-      return NULL;
-   
-   widgetParent = XtParent(widgetCourant);
-   while (widgetParent != NULL)
+   while (XtAppPending(SuperWidget.contexte))
       {
-      widgetCourant = widgetParent;
-      widgetParent = XtParent(widgetCourant);
-      };
-   
-   return widgetCourant;
+      XtAppNextEvent(SuperWidget.contexte, &(theEvent));
+      XtDispatchEvent(&(theEvent));
+      }
+
+   XFlush(XtDisplay(SuperWidget.topLevel));
+   XSync(XtDisplay(SuperWidget.topLevel), False); 
    }

@@ -27,7 +27,7 @@
  ** Dernieres modifications: 28 mai 1990
  **/
 
-#include <xinit.h>
+#include "xinit.h"
 #include <ctype.h>
 #include <rpnmacros.h>
 #include <stdlib.h>

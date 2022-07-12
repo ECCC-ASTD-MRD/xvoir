@@ -18,20 +18,42 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <xinit.h>
+#include <rpnmacros.h>
+#include <stdlib.h>
+#include "xinit.h"
 
-extern SuperWidgetStruct SuperWidget;
-
-FlusherTousLesEvenements()
+int f77name(getulng)()
 {
-   XEvent theEvent;
-   
-   while (XtAppPending(SuperWidget.contexte))
-      {
-      XtAppNextEvent(SuperWidget.contexte, &(theEvent));
-      XtDispatchEvent(&(theEvent));
-      }
-
-   XFlush(XtDisplay(SuperWidget.topLevel));
-   XSync(XtDisplay(SuperWidget.topLevel), False); 
+   return c_getulng();
    }
+
+
+int c_getulng()
+{
+   char *langue;
+   static int langueInitialisee = 0;
+   static int langueUsager;
+
+
+   if (langueInitialisee == 0)
+      {
+      langue = (char *)getenv("CMCLNG");
+      if (langue != NULL)
+	 {
+	 if (0 == strcmp(langue, "english"))
+	    langueUsager = 1;
+	 else
+	    langueUsager = 0;
+	 }
+      else
+	 {
+	 langueUsager = 0;
+	 }
+      
+      langueInitialisee = 1;
+      }
+   
+   return langueUsager;
+   
+   }
+

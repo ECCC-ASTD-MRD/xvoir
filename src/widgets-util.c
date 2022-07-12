@@ -18,8 +18,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <xinit.h>
 #include <Xm/Xm.h>
+#include "xinit.h"
 
 extern SuperWidgetStruct SuperWidget;
 

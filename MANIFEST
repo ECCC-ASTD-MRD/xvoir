@@ -1,0 +1,13 @@
+NAME       : xvoir
+VERSION    : 2.6.0
+BUILD      : Release
+DESCRIPTION: FSTD meta information visualisation program
+SUMMARY    :  
+MAINTAINER : Chantal Pic- Chantal.Pic@ec.gc.ca
+URL        : https://github.com/ECCC-ASTD-MRD/xvoir
+
+# Dependencies 
+#    =,<,<=,>,>= : Version rules
+#    ~           : Optional
+
+RMN  >= 20.0.0

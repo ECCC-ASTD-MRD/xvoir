@@ -5,5 +5,5 @@ set(EXTRA_LIBRARIES "-lXm -lXt -lX11")
 include(ec_shared_lib)
  
 add_executable(${NAME} ${FILES_C} ${FILES_F90} xvoir.f90)
-target_link_libraries(${NAME} rmn ${EXTRA_LIBRARIES})
+target_link_libraries(${NAME} rmn::rmn ${EXTRA_LIBRARIES})
 install(TARGETS ${NAME})

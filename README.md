@@ -1,66 +1,66 @@
-
 XVoir: FSTD meta information visualisation program
 
-* At CMC
+# At CMC
 
-** Build dependencies
+## Build dependencies
 
-- CMake 3.12+
+- CMake 3.20+
 - librmn
 
-Note: =cmake_rpn= is included as a submodule.  Please clone with the
-=--recursive= flag or run =git submodule update --init --recursive= in the
-git repo after having cloned.
+## Environment
 
-** Environment
+Source the right file from the `ECCI_ENV` variable, depending on the desired
+architecture.  This will load the specified compiler, set the
+`ECCI_DATA_DIR` variable for the test datasets, and set the
+`EC_CMAKE_MODULE_PATH` variable for the `cmake_rpn` modules.
 
-Source the right file depending on the architecture you need from the env directory.
-This will load the specified compiler and define the ECCI_DATA_DIR variable for the test datasets
+- Example for PPP5:
 
-- Example for PPP3 and skylake specific architecture:
+```
+. $ECCI_ENV/latest/ppp5/inteloneapi-2022.1.2.sh
+```
 
-#+begin_src
-. $ECCI_ENV/latest/ubuntu-18.04-skylake-64/intel-19.0.3.199.sh
-#+end_src
+- Example for CMC network and gnu 11.4.0:
 
-- Example for XC50 on intel-19.0.5
+```
+. $ECCI_ENV/latest/ubuntu-22.04-amd-64/gnu.sh
+```
 
-#+begin_src
-. $ECCI_ENV/latest/sles-15-skylake-64/intel-19.0.5.281.sh
-#+end_src
+Since the default version of CMake available on ECCC systems is probably too
+old, you need to load a version newer than 3.20.  For example: `. ssmuse-sh
+-d main/opt/cmake/cmake-3.21.1`.
 
-- Example for CMC network and gnu 7.5:
+You will also need a version of librmn: either load it from ssm
+(. r.load.dot rpn/libs/...) or provide the path to cmake install directories
+if you compiled them.
 
-#+begin_src
-. $ECCI_ENV/latest/ubuntu-18.04-amd-64/gnu-7.5.0.sh
-#+end_src
+## Build and install
 
-** Build and install
-
-#+begin_src
+```
 mkdir build
 cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=${your_choice}
+cmake .. -DCMAKE_INSTALL_PREFIX=[your  install path] [-Drmn_ROOT=[path to librmn]]
 make -j 4
-make install
-#+end_src
+make package
+```
 
-* Outside CMC (External users)
+# Outside CMC (external users)
 
-** Build dependencies
+## Build dependencies
 
-- CMake 3.12+
-- librmn with shared libraries (https://github.com/ECCC-ASTD-MRD/librmn/tree/dev)
+- CMake 3.20+
+- librmn with shared libraries (https://github.com/ECCC-ASTD-MRD/librmn/)
 
-Note: =cmake_rpn= ia included as a submodule.  Please run =git submodule update --init --recursive= in the git repo after having cloned.
+`cmake_rpn` is included as a git submodule.  Please clone with the
+`--recursive` option or run `git submodule update --init --recursive` in the
+git repo after having cloned.
 
-** Build and install
+## Build and install
 
-#+begin_src
+```
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=${your_choice} -Drmn_ROOT=${librmn_install_path}
 make -j 4
 make install
-#+end_src
-
+```

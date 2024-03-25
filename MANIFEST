@@ -10,4 +10,4 @@ URL        : https://github.com/ECCC-ASTD-MRD/xvoir
 #    =,<,<=,>,>= : Version rules
 #    ~           : Optional
 
-RMN  >= 20.0.0
+rmn  >= 20.1.0

@@ -1,17 +1,17 @@
 integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   implicit none
   integer ttlrecs,ntmrecs
-  character*128 nomfich
+  character(len=128) nomfich
   integer iun, winind, typesel
   logical styleflag
   
 #include "xfsl-voir.cdk"
   
-  character*4 nomvar
-  character*2 typvar
-  character*1  grtyp, cdatyp
-  character*12 etiket
-  character*158  titre
+  character(len=4) nomvar
+  character(len=2) typvar
+  character(len=1)  grtyp, cdatyp
+  character(len=12) etiket
+  character(len=158)  titre
   
   integer key, date0, deet, npas, ni, nj, nk, nbits, datyp 
   integer ip1, ip2, ip3, swa, lng, dltf, ubc
@@ -25,7 +25,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   integer ier
   integer kind
   real p
-  character*12 string
+  character(len=12) string
   integer i, j, inf
 
   integer, dimension (:), allocatable :: reclist
@@ -166,7 +166,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
 ! 1234 12 123456789ABC 123456789ABC 123456789ABC 123456 123456 123456 123456789abc 12345678 123456 12345 1234567 1 12345678 12345678 12345678 12345678 123
    
    subroutine initidv(idents)
-     character*16 idents(*)
+     character(len=16) idents(*)
      
      integer i, j, ulng
      integer  getulng
@@ -196,7 +196,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
    end subroutine initidv
 
    subroutine inittabv(tableau, table, len)
-     character*158 tableau(*)
+     character(len=158) tableau(*)
      integer table(3, *)
      integer len
      integer sumlen
@@ -264,7 +264,7 @@ integer function xfslactv(slkeys, nslkeys, winind)
 !   
 
   subroutine get_cdatyp(cdatyp, datyp)
-  character*1 cdatyp
+  character(len=1) cdatyp
   integer datyp
   
     if (datyp.eq.0) then

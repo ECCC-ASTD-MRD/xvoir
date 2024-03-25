@@ -28,11 +28,11 @@
       INTEGER IPTAB
       REAL    ASPRAT
 
-      character*4 nomvar
-      character*2 typvar 
-      character*1 grtyp,cdatyp
-      character*12 etiket
-      character*158 titre
+      character(len=4) nomvar
+      character(len=2) typvar 
+      character(len=1) grtyp,cdatyp
+      character(len=12) etiket
+      character(len=158) titre
 
       
       INTEGER KEY, DATE0, DEET, NPAS, NI, NJ, NK, NBITS, DATYP 
@@ -48,8 +48,8 @@
       INTEGER IER
       INTEGER I, J, INF
       
-      character*16 option, valeur
-      character*128   nomfich
+      character(len=16) option, valeur
+      character(len=128)   nomfich
       integer        recs(MAXRECS)
       integer        indsel, iun
 
@@ -58,8 +58,8 @@
       integer nbdes
       logical styleflag
       
-      CHARACTER * 16   CLE(41)
-      CHARACTER * 128 DEF(41), VAL(41)
+      character(len=16)   CLE(41)
+      character(len=128) DEF(41), VAL(41)
       integer lnkdiun(40)
 !
       DATA CLE/40*'iment.', 'style'/

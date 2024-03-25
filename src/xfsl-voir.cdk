@@ -4,8 +4,8 @@
   parameter (maxrecs= 64)
   parameter (maxdes = 24)
   
-  character*16 idents 
-  character*158 tableau
+  character(len=16) idents 
+  character(len=158) tableau
   common /xfscinf/ idents(maxdes), tableau(0:maxrecs)
   
   integer table, recs,nrecs, nbrecs, nbdes

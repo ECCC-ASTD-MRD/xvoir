@@ -1,5 +1,5 @@
 
-#define LIGNE   86  /* nb de car entrant ds une ligne de texte */
+#define LIGNE   86  /* nb de carac entrant ds une ligne de texte */
 #define NB_MAX_RECS 4000    /* nb max. de records permis. */
 
 
@@ -7,7 +7,7 @@
    construire le tableau d'enregistrements */
 
 #define LENGTH  0               /* indice de longueur des chaines de 
-			   	   car d` un descripteur donne */
+			   	   car d'un descripteur donne */
 #define OFFSET  1               /* indice de la distance (en bytes) entre
                                    chaque element d'un descripteur */
 #define ADRESSE 2               /* indice de l'adresse du premier element

@@ -20,12 +20,11 @@
 
 #include <Xm/Xm.h>
 #include "xinit.h"
+#include "flush.h"
 
 extern SuperWidgetStruct SuperWidget;
 
-
-InvertWidget(w)
-Widget w;
+void InvertWidget(Widget w)
 {
    int i;
    Pixel back, fore;
@@ -43,12 +42,9 @@ Widget w;
    XtSetValues(w, args, i);
 
    FlusherTousLesEvenements();
-   }
+}
 
-
-
-ActiverWidget(w)
-Widget w;
+void ActiverWidget(Widget w)
 {
    int i;
    Arg args[1];
@@ -58,11 +54,9 @@ Widget w;
    XtSetValues(w, args, i);
 
    FlusherTousLesEvenements();
-   }
+}
 
-
-DesactiverWidget(w)
-Widget w;
+void DesactiverWidget(Widget w)
 {
    int i;
    Arg args[1];
@@ -72,12 +66,9 @@ Widget w;
    XtSetValues(w, args, i);
 
    FlusherTousLesEvenements();
-   }
+}
 
-
-
-AjusterPositionForme(w, wp)
-Widget w, wp;
+void AjusterPositionForme(Widget w, Widget wp)
 {
    Position i,x,y,wWidth,wHeight, wpWidth, wpHeight;
    Position displayWidth, displayHeight;
@@ -120,4 +111,4 @@ Widget w, wp;
    XtSetArg(args[i], XmNx, x); i++;
    XtSetArg(args[i], XmNy, y); i++;
    XtSetValues(w, args, i);
-   }
+}

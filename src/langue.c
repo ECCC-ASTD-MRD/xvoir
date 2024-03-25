@@ -22,18 +22,11 @@
 #include <stdlib.h>
 #include "xinit.h"
 
-int f77name(getulng)()
-{
-   return c_getulng();
-   }
-
-
 int c_getulng()
 {
    char *langue;
    static int langueInitialisee = 0;
    static int langueUsager;
-
 
    if (langueInitialisee == 0)
       {
@@ -55,5 +48,9 @@ int c_getulng()
    
    return langueUsager;
    
-   }
+}
 
+int f77name(getulng)()
+{
+   return c_getulng();
+}

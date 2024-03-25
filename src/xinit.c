@@ -30,6 +30,7 @@
 #include "xinit.h"
 #include <ctype.h>
 #include <rmn/rpnmacros.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -43,23 +44,6 @@ SuperWidgetStruct SuperWidget = { NULL, NULL };
 Widget   xglTopLevel, xglBox, xglCoreWidget;
 static char *defaultResourceDir = NULL;
   
-/**
-************************************************************
-************************************************************
-**/
-
-int f77name(xinit)(char nomApplication[], F2Cl  flenNomApplication)
-{
-   char copieNomApplication[256];
-   int  lenNomApplication=flenNomApplication;
-   
-   strncpy(copieNomApplication, nomApplication, lenNomApplication);
-   copieNomApplication[lenNomApplication] = '\0';
-
-   Xinit(copieNomApplication);
-    
-   }
-
 /**
 ************************************************************
 ************************************************************
@@ -116,4 +100,19 @@ int Xinit(char nomApplication[])
       }
    }
 
+/**
+************************************************************
+************************************************************
+**/
+
+int f77name(xinit)(char nomApplication[], F2Cl  flenNomApplication)
+{
+   char copieNomApplication[256];
+   int  lenNomApplication=flenNomApplication;
+   
+   strncpy(copieNomApplication, nomApplication, lenNomApplication);
+   copieNomApplication[lenNomApplication] = '\0';
+
+   return(Xinit(copieNomApplication));
+}
 

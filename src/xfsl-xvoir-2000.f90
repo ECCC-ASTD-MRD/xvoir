@@ -107,9 +107,9 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
 4 format(3i16)
 5 format(128a)
 6 format(40a)
-10 FORMAT(A4, X, A2, X, I12, X, I12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
-11 FORMAT(A4, X, A2, X, a12, X, i12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, g9.3, x, g9.3, x, g9.3, x, g9.3, x, a1,i2.2)
-12 FORMAT(A4, X, A2, X, a12, X, i12, X, I12, X, I6, X, I6, X, I6, X, A12, X, i8.8,X,i6.6, X, i5, x, i7, x, a1, x, i9,   x, i9,   x, i9,   x, i9,   x, a1,i2.2)
+10 FORMAT(A4, 1X, A2, 1X, I12, 1X, I12, 1X, I12, 1X, I6, 1X, I6, 1X, I6, 1X, A12, 1X, i8.8,1X,i6.6, 1X, i5, 1X, i7, 1X, a1, 1X, i9,   1X, i9,   1X, i9,   1X, i9,   1X, a1,i2.2)
+11 FORMAT(A4, 1X, A2, 1X, a12, 1X, i12, 1X, I12, 1X, I6, 1X, I6, 1X, I6, 1X, A12, 1X, i8.8,1X,i6.6, 1X, i5, 1X, i7, 1X, a1, 1X, g9.3, 1X, g9.3, 1X, g9.3, 1X, g9.3, 1X, a1,i2.2)
+12 FORMAT(A4, 1X, A2, 1X, a12, 1X, i12, 1X, I12, 1X, I6, 1X, I6, 1X, I6, 1X, A12, 1X, i8.8,1X,i6.6, 1X, i5, 1X, i7, 1X, a1, 1X, i9,   1X, i9,   1X, i9,   1X, i9,   1X, a1,i2.2)
   
   return
 end function xfslvoir2000

@@ -44,7 +44,6 @@ static char fg_name[] = "White",
             bc_name[] = "DarkSlateBlue";
 
 
-
 /*****************************************************
  **
  **  chargerLaFonte:
@@ -57,16 +56,13 @@ XFontStruct *chargerLaFonte(Display *display, char fontName[])
  
   fontStruct = XLoadQueryFont(display, fontName);
 
-  if (fontStruct == 0)
+  if (fontStruct == NULL)
      fprintf(stderr, "Cette fonte n'est pas disponible\n");
-  else
-     return(fontStruct);
-
+  
+  return(fontStruct);
 }
 
 
-
-
 /***************************************************************
  **
  **  InitColor: Seter les couleurs des foreground, background 
@@ -75,29 +71,25 @@ XFontStruct *chargerLaFonte(Display *display, char fontName[])
  ***************************************************************/
 
 
-
 /*********************************************************
  *
- *  XmToS: transformer XmString en string.
+ *  auxXmToS: transformer XmString en string.
  *
  *********************************************************/
 
-void XmToS(XmString xm, char **string)
+void auxXmToS(XmString xm, char **string)
 { 
-  int i;
-
   XmStringGetLtoR(xm, XmSTRING_DEFAULT_CHARSET, string);
 }
 
 
-
 /*********************************************************
  *
- *  SToXm: transformer string en XmString.
+ *  auxSToXm: transformer string en XmString.
  *
  *********************************************************/
 
-void SToXm(XmString *xm, char *string)
+void auxSToXm(XmString *xm, char *string)
 
 {
   *xm= XmStringCreateLtoR(string, XmSTRING_DEFAULT_CHARSET);

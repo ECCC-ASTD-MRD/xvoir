@@ -52,7 +52,7 @@ static String RessourcesDeDefaut[] = {
    "xvoirRecordSelector*recordList.visibleItemCount: 20",
 
    /* la police de caractères */
-   "*fontList:   6x10",
+   //   "*fontList:   6x10",
    //"*fontList:   XtDefaultFont",
    NULL, };
 SuperWidgetStruct SuperWidget = { NULL, NULL };

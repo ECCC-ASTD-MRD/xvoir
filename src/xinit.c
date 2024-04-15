@@ -34,12 +34,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
 
 /* #define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data" */
 #define DEFAULT_RESOURCE_DIR ""
 #define INITIALISATION_COMPLETEE 101
 
-static String RessourcesDeDefaut[] = {  NULL, };
+/* Ajouter quelques valeurs de défaut pour les ressources de Motif */
+static String RessourcesDeDefaut[] = {
+   /* le titre en haut de la fenêtre */
+   "*title: XVoir",
+   "xvoirSelecteurEnr*popup_popup*title: XVoir - selecteur",
+   "xvoirRecordSelector*popup_popup*title: XVoir - selector",
+
+   /* le nombre de lignes visibles */
+   "xvoirSelecteurEnr*listeRecords.visibleItemCount: 20",
+   "xvoirRecordSelector*recordList.visibleItemCount: 20",
+
+   /* la police de caractères */
+   "*fontList:   6x10",
+   //"*fontList:   XtDefaultFont",
+   NULL, };
 SuperWidgetStruct SuperWidget = { NULL, NULL };
 Widget   xglTopLevel, xglBox, xglCoreWidget;
 static char *defaultResourceDir = NULL;
@@ -55,8 +70,8 @@ int Xinit(char nomApplication[])
    static char **argv;  
    static char *classeApplication;  
    static int   statutInitialisation;
-   static char xapplresdir[128];
-   static char *envvar;
+   char *envvar;
+   char *armlibdata;
    int i; 
    int argc = 1;
 
@@ -64,18 +79,20 @@ int Xinit(char nomApplication[])
       return 1;
    else
       {
-      envvar = (char *) getenv("ARMNLIB_DATA");
-      if (NULL == envvar)
-	 {
-	 printf("La variable d'environnement ARMNLIB_DATA n'est pas definie...\n Impossible de continuer\n");
-	 exit(-1);
-	 }
-      
-      strcpy(xapplresdir, "XAPPLRESDIR=");
-      strcat(xapplresdir, (char *) (getenv("ARMNLIB_DATA")));
-
-      envvar = (char *) xapplresdir;
-      putenv(envvar);
+      armlibdata = getenv("ARMNLIB_DATA");
+      if (armlibdata == NULL)
+      {
+	 printf("La variable d'environnement ARMNLIB_DATA n'est pas définie... On utilisera les valeurs de défaut.\n");
+      }
+      else
+      {
+         /* ajouter la variable XAPPLRESDIR=armlibdata à l'environnement */
+         static char xapplresdir[PATH_MAX+20];
+         strcat( strcpy(xapplresdir, "XAPPLRESDIR="), armlibdata );
+         
+         envvar = (char *) xapplresdir;
+         putenv(envvar);
+      }
 
       argv = (char **) calloc(1, sizeof(char *));
       argv[0] = (char *) calloc(strlen(nomApplication)+1, sizeof(char));

@@ -140,21 +140,21 @@ typedef struct
                                                    le tableau original */
    XmString      *recsAffiches;                 /* Le tableau de records affiches. */
    XmString      *recsFiltresAffiches;          /* tableau des records deja filtres qui est affiche. */
-   int32_t           nbDes;                         /* nb total de descripteurs (de colonnes) dans le tableau */
-   int32_t           lastNbRecs;
-   int32_t           nbRecs;                        /* nb total de records dans le tableau */
-   int32_t           nbRecsFiltres;                 /* nb total de records repondant aux criteres de selection */
-   int32_t           nbCles;                        /* nb total de cles (dans toutes les colonnes du tableau) */
-   int32_t           nbFiltres;                     /* nb total de filtres en vigueur */
-   int32_t           nbRecsSelect;                  /* nb total de recordss selectionnes par l'usager. Cette
+   int32_t       nbDes;                         /* nb total de descripteurs (de colonnes) dans le tableau */
+   int32_t       lastNbRecs;
+   int32_t       nbRecs;                        /* nb total de records dans le tableau */
+   int32_t       nbRecsFiltres;                 /* nb total de records repondant aux criteres de selection */
+   int32_t       nbCles;                        /* nb total de cles (dans toutes les colonnes du tableau) */
+   int32_t       nbFiltres;                     /* nb total de filtres en vigueur */
+   int32_t       nbRecsSelect;                  /* nb total de recordss selectionnes par l'usager. Cette
                                                   operation se fait par un click de la souris. */
-   int32_t           *indRecsFiltres;               /* tableau contenant les indices des records repondant aux
+   int32_t       *indRecsFiltres;               /* tableau contenant les indices des records repondant aux
                                                    criteres de selection */
-   int32_t           *indRecsSelect;                /* tableau contenant les indices des records selectionnes par 
+   int32_t       *indRecsSelect;                /* tableau contenant les indices des records selectionnes par 
                                                    l'usager */
-   int32_t           typeSelection;
-   int32_t           statutBoutonFermer;
-   int32_t           StatutSelection;               /* = SELECTION_TERMINEE quand on choisis Apply */
+   int32_t       typeSelection;
+   int32_t       statutBoutonFermer;
+   int32_t       StatutSelection;               /* = SELECTION_TERMINEE quand on choisis Apply */
                                                 /* = SELECTION_FINIE quand on choisis Close */
                                                 /* = SELECTION_EN_COURS autrement. */
    XEvent        theEvent;                      /* Evenement X */
@@ -276,7 +276,6 @@ static void FermerSelecteur(Widget w, void* unused1, void* unused2);
 static void DeselectionnerRecords(Widget w, void* unused1, void* unused2);
 static void EffacerFiltres(Widget w, void* unused1, void* unused2);
 static void EffacerFiltresSeulement(Widget w, void* u1, void* u2);
-static void FermerSelecteur(Widget w, void* unused1, void* unused2);
 static void HighlightFields(Widget  w, void* unused1, void* call_data);
 static void MontrerDescripteurs(Widget w, void* u1, void* u2);
 static void SelectionListeTerminee(Widget w, void* u1, void* u2);
@@ -400,7 +399,7 @@ static void AfficherInfoFiltres(Widget w, void* unused1, void* unused2)
 
 NOM:                    DeselectionnerRecords()
 
-FONCTION:               Desactiver touts les records qui ont ete selectionnes
+FONCTION:               Desactiver tous les records qui ont ete selectionnes
                         dans la liste des records (fichiers standards).
 
 APPELE PAR:             XtMainLoop() quand on appuie sur le bouton deselectionnerRecs.
@@ -1889,7 +1888,7 @@ void InitWidgetsForm()
       XtSetArg(args[i], XmNleftAttachment, XmATTACH_FORM); i++;
       XtSetArg(args[i], XmNrightAttachment, XmATTACH_FORM); i++;
       XtSetArg(args[i], XmNtopWidget, xs[wi].fermer); i++;
-      xs[wi].separateurBoutonFermer = (Widget)XmCreateSeparator(xs[wi].pan, "Fermer", args, i);
+      xs[wi].separateurBoutonFermer = (Widget)XmCreateSeparator(xs[wi].pan, "sepFermer", args, i);
       XtManageChild(xs[wi].separateurBoutonFermer);
       }
 

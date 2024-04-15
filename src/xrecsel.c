@@ -1800,7 +1800,7 @@ void InitWidgetsCallback(int32_t nbDes)
    }
 
    XtAddCallback(xs[wi].effacerFiltres,  XmNactivateCallback, EffacerFiltres, NULL);
-   XtAddCallback(xs[wi].liste, XmNdefaultActionCallback, Ok, NULL); 
+   /*   XtAddCallback(xs[wi].liste, XmNdefaultActionCallback, Ok, NULL);  */
    XtAddCallback(xs[wi].liste, XmNbrowseSelectionCallback, HighlightFields, NULL); 
    XtAddCallback(xs[wi].liste, XmNmultipleSelectionCallback, HighlightFields, NULL); 
    XtAddCallback(xs[wi].liste, XmNextendedSelectionCallback, HighlightFields, NULL); 

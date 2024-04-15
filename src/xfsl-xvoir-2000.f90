@@ -47,6 +47,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   endif
   
   i = 0
+  ntmrecs = i
   ier = fstrwd(iun)
   key = fstinf(iun, ni, nj, nk,  -1, ' ', -1, -1, -1, ' ', ' ')
   do while (key.ge.0)

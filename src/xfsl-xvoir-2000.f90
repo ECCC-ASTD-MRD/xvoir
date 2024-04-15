@@ -35,7 +35,9 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   endif
   
   nbdes = 19
-  call initidv(idents, maxdes)
+  ! initialiser les entêtes
+  call initidv(idents)
+  ! initialiser les lignes de la table
   call inittabv(tableau, table, ligne)
   write(titre, 5) nomfich
   
@@ -48,15 +50,21 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   
   i = 0
   ntmrecs = i
+  !rewind
+  ! FIXME: fstrwd donne un message "(WARNING) FST|c_fstrwd_xdf: file (unit=1) is not sequential"
   ier = fstrwd(iun)
+  !***FONCTION FSTINF , TROUVER UN ENREGISTREMENT SUR FICHIER IUN
   key = fstinf(iun, ni, nj, nk,  -1, ' ', -1, -1, -1, ' ', ' ')
   do while (key.ge.0)
     i = i+1
     
+    ! OBTENIR L'INFORMATION RELIEE A L ENREGISTREMENT
     inf = fstprm(key, date0, deet, npas, ni, nj, nk, nbits,datyp, ip1, ip2, ip3, typvar, & 
         nomvar, etiket, grtyp, ig1, ig2, ig3, ig4, swa, lng, dltf, ubc, extra1, extra2, extra3)
     
     call get_cdatyp(cdatyp, datyp)
+    !**FUNCTION NEWDATE : CONVERTS DATES BETWEEN TWO OF THE FOLLOWING
+    !FORMATS: PRINTABLE DATE, CMC DATE-TIME STAMP, TRUE DATE
     call newdate(date0,yyyymmdd,hhmmssss,-3)
     hhmmssss = hhmmssss / 100
     
@@ -66,6 +74,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     else
       call convip_plus( ip1, p, kind, -1, string, .true.)
       if (grtyp.ne.'Z'.and.grtyp.ne.'Y') then
+         !  S/P CIGAXG - PASSE DES PARAMETRES (ENTIERS) DESCRIPTEURS DE GRILLE AUX PARAMETRES REELS.
           call cigaxg(grtyp,xg1,xg2,xg3,xg4,ig1,ig2,ig3,ig4)
       else
           xg1 = ig1
@@ -99,6 +108,7 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
 !   
 !   goto 50
 ! 100 continue
+    ! TROUVER L' ENREGISTREMENT SUIVANT
     key = fstsui(iun, ni, nj, nk)
   enddo
 100  res = xselouf(table, ntmrecs)

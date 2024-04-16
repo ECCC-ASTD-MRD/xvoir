@@ -71,6 +71,8 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     if (.not.styleflag) then
       write(tableau(mod(i-1,64)), 10) NOMVAR, TYPVAR, IP1, IP2, IP3, NI, NJ, NK, ETIKET, &
              yyyymmdd,hhmmssss, deet, npas, grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
+      ! debug pour vérifier l'output
+      ! WRITE(2000,*) '@;tableau1 ', i,tableau(mod(i-1,64))
     else
       call convip_plus( ip1, p, kind, -1, string, .true.)
       if (grtyp.ne.'Z'.and.grtyp.ne.'Y') then
@@ -89,6 +91,8 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
           write(tableau(mod(i-1,64)), 12) NOMVAR,TYPVAR, adjustr(string),IP2,IP3,NI, NJ, NK, ETIKET, &
             yyyymmdd,hhmmssss, deet, npas,grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
       endif
+      ! debug pour vérifier l'output
+      ! WRITE(2000,*) '@;tableau2 ', i,tableau(mod(i-1,64))
     endif
     
     reclist(i) = key
@@ -112,6 +116,9 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     key = fstsui(iun, ni, nj, nk)
   enddo
 100  res = xselouf(table, ntmrecs)
+! debug pour vérifier l'output
+!  close(2000)
+
   xfslvoir2000 = winind
   
 2 format(40a)

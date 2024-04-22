@@ -1,8 +1,10 @@
-integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
+integer function xfslvoir2000(nomfich, sources, ttlrecs, winind, typesel, styleflag)
+  use rmn_fst24
   implicit none
   integer ttlrecs,ntmrecs
   character(len=128) nomfich
-  integer iun, winind, typesel
+  type(fst_file) :: sources
+  integer winind, typesel
   logical styleflag
   
 #include "xfsl-voir.cdk"
@@ -21,6 +23,11 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   integer xselouv, xseloup, xselins, xselouf
   real xg1, xg2, xg3, xg4
   integer yyyymmdd,hhmmssss
+  
+  type(fst_record) :: mon_enregistrement
+  type(fst_query)  :: ma_requete
+  logical :: succes
+  integer :: num_records
   
   integer ier
   integer kind
@@ -50,23 +57,42 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   
   i = 0
   ntmrecs = i
-  !rewind
-  ! FIXME: fstrwd donne un message "(WARNING) FST|c_fstrwd_xdf: file (unit=1) is not sequential"
-  ier = fstrwd(iun)
-  !***FONCTION FSTINF , TROUVER UN ENREGISTREMENT SUR FICHIER IUN
-  key = fstinf(iun, ni, nj, nk,  -1, ' ', -1, -1, -1, ' ', ' ')
-  do while (key.ge.0)
+
+  !ier = fstrwd(iun)
+  !key = fstinf(iun, ni, nj, nk,  -1, ' ', -1, -1, -1, ' ', ' ')
+  ! Boucler sur tous les enregistrements
+  ma_requete = sources % new_query() ! aucun critère de sélection
+
+  !do while (key.ge.0)
+  do while (ma_requete % find_next(mon_enregistrement))
+    succes = mon_enregistrement % read() ! lire du disque
+
     i = i+1
+    key = i
     
-    ! OBTENIR L'INFORMATION RELIEE A L ENREGISTREMENT
-    inf = fstprm(key, date0, deet, npas, ni, nj, nk, nbits,datyp, ip1, ip2, ip3, typvar, & 
-        nomvar, etiket, grtyp, ig1, ig2, ig3, ig4, swa, lng, dltf, ubc, extra1, extra2, extra3)
-    
-    call get_cdatyp(cdatyp, datyp)
-    !**FUNCTION NEWDATE : CONVERTS DATES BETWEEN TWO OF THE FOLLOWING
-    !FORMATS: PRINTABLE DATE, CMC DATE-TIME STAMP, TRUE DATE
-    call newdate(date0,yyyymmdd,hhmmssss,-3)
+    call get_cdatyp(cdatyp, mon_enregistrement % data_type)
+    call newdate(mon_enregistrement % dateo,yyyymmdd,hhmmssss,-3)
     hhmmssss = hhmmssss / 100
+    
+    ! Récupérer les valeurs de cet enregistrement
+    nomvar = mon_enregistrement % nomvar
+    typvar = mon_enregistrement % typvar
+    ip1 = mon_enregistrement % ip1
+    ip2 = mon_enregistrement % ip2
+    ip3 = mon_enregistrement % ip3
+    etiket = mon_enregistrement % etiket
+    deet = mon_enregistrement % deet
+    npas = mon_enregistrement % npas
+    grtyp = mon_enregistrement % grtyp
+    ig1 = mon_enregistrement % ig1
+    ig2 = mon_enregistrement % ig2
+    ig3 = mon_enregistrement % ig3
+    ig4 = mon_enregistrement % ig4
+!    nbits = mon_enregistrement % dasiz
+    nbits = mon_enregistrement % pack_bits
+    ni = mon_enregistrement % ni
+    nj = mon_enregistrement % nj
+    nk = mon_enregistrement % nk
     
     if (.not.styleflag) then
       write(tableau(mod(i-1,64)), 10) NOMVAR, TYPVAR, IP1, IP2, IP3, NI, NJ, NK, ETIKET, &
@@ -109,12 +135,11 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     if (0.eq.mod(i,64).or.i.eq.ttlrecs) then
       res = xselins(tableau,table,ntmrecs)
     endif
-!   
-!   goto 50
-! 100 continue
-    ! TROUVER L' ENREGISTREMENT SUIVANT
-    key = fstsui(iun, ni, nj, nk)
   enddo
+  
+  ! Libérer la requête
+  call ma_requete % free()
+
 100  res = xselouf(table, ntmrecs)
 ! debug pour vérifier l'output
 !  close(2000)
@@ -222,7 +247,6 @@ integer function xfslactv(slkeys, nslkeys, winind)
      
      integer reclen(20)
      data reclen /5,3,13,13,13,7,7,7,13,9,7,6,8,2,10,10,10,10,3,0/
-     
      
      sumlen       = 0
      do i=1,20

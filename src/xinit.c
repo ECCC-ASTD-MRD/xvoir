@@ -35,6 +35,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
+#include <signal.h>
 
 /* #define DEFAULT_RESOURCE_DIR "/usr/local/env/armnlib/data" */
 #define DEFAULT_RESOURCE_DIR ""
@@ -58,21 +59,37 @@ static String RessourcesDeDefaut[] = {
 SuperWidgetStruct SuperWidget = { NULL, NULL };
 Widget   xglTopLevel, xglBox, xglCoreWidget;
 static char *defaultResourceDir = NULL;
-  
+
 /**
 ************************************************************
 ************************************************************
 **/
 
+#if 0
+static void XVoirSigHandler( int sig )
+{
+   switch ( sig )
+   {
+   case SIGHUP:
+   case SIGINT:
+   case SIGTERM:
+      /* puisqu'on demande de terminer... terminons! */
+      exit( sig );
+      break;
+   }
+   return;
+}
+#endif
+
 int Xinit(char nomApplication[])
 {
    Arg args[10];
-   static char **argv;  
-   static char *classeApplication;  
+   static char **argv;
+   static char *classeApplication;
    static int   statutInitialisation;
    char *envvar;
    char *armlibdata;
-   int i; 
+   int i;
    int argc = 1;
 
    if (SuperWidget.topLevel != NULL)
@@ -89,7 +106,7 @@ int Xinit(char nomApplication[])
          /* ajouter la variable XAPPLRESDIR=armlibdata à l'environnement */
          static char xapplresdir[PATH_MAX+20];
          strcat( strcpy(xapplresdir, "XAPPLRESDIR="), armlibdata );
-         
+
          envvar = (char *) xapplresdir;
          putenv(envvar);
       }
@@ -97,21 +114,31 @@ int Xinit(char nomApplication[])
       argv = (char **) calloc(1, sizeof(char *));
       argv[0] = (char *) calloc(strlen(nomApplication)+1, sizeof(char));
       strcpy(argv[0], nomApplication);
-      
+
       classeApplication = (char *) calloc(strlen(nomApplication)+1, sizeof(char));
       strcpy(classeApplication, nomApplication);
-      
+
       classeApplication[0] = (char)(toupper(classeApplication[0]));
       classeApplication[1] = (char)(toupper(classeApplication[1]));
-      
+
       i = 0;
-      SuperWidget.topLevel = XtAppInitialize(&(SuperWidget.contexte), 
-					     classeApplication, NULL, 0, 
-					     &argc, argv, RessourcesDeDefaut, 
+      SuperWidget.topLevel = XtAppInitialize(&(SuperWidget.contexte),
+					     classeApplication, NULL, 0,
+					     &argc, argv, RessourcesDeDefaut,
 					     args, i);
       free(argv[0]);
       free(argv);
       free(classeApplication);
+      /* installer un SigHandler en cas de SIGINT (Ctrl-C) pour éviter un traceback */
+      {
+         struct sigaction act;
+         /* act.sa_handler = XVoirSigHandler; */
+         act.sa_handler = exit;
+         sigemptyset( &act.sa_mask );
+         act.sa_flags = 0;
+         sigaction( SIGINT, &act, NULL );
+      }
+
       statutInitialisation = INITIALISATION_COMPLETEE;
       return 1;
       }
@@ -126,7 +153,7 @@ int f77name(xinit)(char nomApplication[], F2Cl  flenNomApplication)
 {
    char copieNomApplication[256];
    int  lenNomApplication=flenNomApplication;
-   
+
    strncpy(copieNomApplication, nomApplication, lenNomApplication);
    copieNomApplication[lenNomApplication] = '\0';
 

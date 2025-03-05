@@ -2773,8 +2773,8 @@ void XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t
       xs[wi].indRecsFiltres        = (int32_t *)calloc(xs[wi].nbRecs, sizeof(int));
       xs[wi].indRecsSelect         = (int32_t *)calloc(xs[wi].nbRecs, sizeof(int));
       xs[wi].recsAffiches          = (XmString *)calloc(nbrecs, sizeof(XmString));
-      xs[wi].recs                  = (XmString **)calloc(nbdes, sizeof(XmString *)); 
-      
+      xs[wi].recs                  = (XmString **)malloc(nbdes * sizeof(XmString *)); // ensuite initialisé dans la boucle ci-dessous
+
       for (i = 0; i < nbdes; i++) 
          xs[wi].recs[i] = (XmString *)calloc(nbrecs, sizeof(XmString));
    }

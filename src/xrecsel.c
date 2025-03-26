@@ -65,11 +65,7 @@
 #include <Xm/Separator.h>
 
 #include "xinit.h"
-#include "flush.h"
-#include "langue.h"
 #include "xm-xselectstd.h"
-#include "widgets-util.h"
-#include "aux.h"
 #include <rmn/rpnmacros.h>
 
 #define NB_MAX_DESCRIPTEURS     24              /* nb max. de descripteurs permis dans un tableau               */
@@ -97,13 +93,13 @@ typedef struct
    int32_t nbOccur;                 /* nb. occurences de la cle dans une colonne du tableau  */
    int32_t *ind;                    /* tableau d'indices montrant les occur. de la cle dans une colonne
                                    du tableau des records. */
-} cleInfoStruct;
+   } cleInfoStruct;
 
 typedef struct
 {
    int32_t nbCles;                  /* nb de cles distinctes dans une colonne du tableau */
    cleInfoStruct *cleInfo;      /* infos associees a cette cle */
-} cleStruct;
+   } cleStruct;
 
 typedef struct
 {
@@ -140,21 +136,21 @@ typedef struct
                                                    le tableau original */
    XmString      *recsAffiches;                 /* Le tableau de records affiches. */
    XmString      *recsFiltresAffiches;          /* tableau des records deja filtres qui est affiche. */
-   int32_t       nbDes;                         /* nb total de descripteurs (de colonnes) dans le tableau */
-   int32_t       lastNbRecs;
-   int32_t       nbRecs;                        /* nb total de records dans le tableau */
-   int32_t       nbRecsFiltres;                 /* nb total de records repondant aux criteres de selection */
-   int32_t       nbCles;                        /* nb total de cles (dans toutes les colonnes du tableau) */
-   int32_t       nbFiltres;                     /* nb total de filtres en vigueur */
-   int32_t       nbRecsSelect;                  /* nb total de recordss selectionnes par l'usager. Cette
+   int32_t           nbDes;                         /* nb total de descripteurs (de colonnes) dans le tableau */
+   int32_t           lastNbRecs;
+   int32_t           nbRecs;                        /* nb total de records dans le tableau */
+   int32_t           nbRecsFiltres;                 /* nb total de records repondant aux criteres de selection */
+   int32_t           nbCles;                        /* nb total de cles (dans toutes les colonnes du tableau) */
+   int32_t           nbFiltres;                     /* nb total de filtres en vigueur */
+   int32_t           nbRecsSelect;                  /* nb total de recordss selectionnes par l'usager. Cette
                                                   operation se fait par un click de la souris. */
-   int32_t       *indRecsFiltres;               /* tableau contenant les indices des records repondant aux
+   int32_t           *indRecsFiltres;               /* tableau contenant les indices des records repondant aux
                                                    criteres de selection */
-   int32_t       *indRecsSelect;                /* tableau contenant les indices des records selectionnes par 
+   int32_t           *indRecsSelect;                /* tableau contenant les indices des records selectionnes par 
                                                    l'usager */
-   int32_t       typeSelection;
-   int32_t       statutBoutonFermer;
-   int32_t       StatutSelection;               /* = SELECTION_TERMINEE quand on choisis Apply */
+   int32_t           typeSelection;
+   int32_t           statutBoutonFermer;
+   int32_t           StatutSelection;               /* = SELECTION_TERMINEE quand on choisis Apply */
                                                 /* = SELECTION_FINIE quand on choisis Close */
                                                 /* = SELECTION_EN_COURS autrement. */
    XEvent        theEvent;                      /* Evenement X */
@@ -243,7 +239,7 @@ typedef struct
    } XSelectStdStruct;
 
 int32_t largeurMenus[NB_MAX_DESCRIPTEURS];
-static int32_t           wi;                    /* L'indice de la fenetre dans laquelle on travaille.   */
+static int32_t               wi;                    /* L'indice de la fenetre dans laquelle on travaille.   */
 static XSelectStdStruct  xs[NB_MAX_FENETRES];   /* La structure qui contient tout.                      */
 extern SuperWidgetStruct SuperWidget;           /* Le toplevel de l'application.                        */
 /*======================================================================================================*/
@@ -271,67 +267,69 @@ int32_t c_xseldown(int32_t indSelecteur);
 
 /* Callbacks. */
 
-static void Ok(Widget W, void* unused1, void* unused2);
-static void FermerSelecteur(Widget w, void* unused1, void* unused2);
-static void DeselectionnerRecords(Widget w, void* unused1, void* unused2);
-static void EffacerFiltres(Widget w, void* unused1, void* unused2);
-static void EffacerFiltresSeulement(Widget w, void* u1, void* u2);
-static void HighlightFields(Widget  w, void* unused1, void* call_data);
-static void MontrerDescripteurs(Widget w, void* u1, void* u2);
-static void SelectionListeTerminee(Widget w, void* u1, void* u2);
+static XtCallbackProc Ok(Widget W, void* unused1, void* unused2);
+static XtCallbackProc FermerSelecteur(Widget w, void* unused1, void* unused2);
+static XtCallbackProc DeselectionnerRecords(Widget w, void* unused1, void* unused2);
+static XtCallbackProc EffacerFiltres(Widget w, void* unused1, void* unused2);
+static XtCallbackProc EffacerFiltresSeulement(Widget w, void* u1, void* u2);
+static XtCallbackProc FermerSelecteur(Widget w, void* unused1, void* unused2);
+static XtCallbackProc HighlightFields(Widget  w, void* unused1, void* call_data);
+static XtCallbackProc MontrerDescripteurs(Widget w, void* u1, void* u2);
+static XtCallbackProc SelectionListeTerminee(Widget w, void* u1, void* u2);
 
 
 /* Autres fonctions. */
 
 static void AfficherInfoFiltres(Widget w, void* unused1, void* unused2);
-void        ActiverSelWidgets();
+int32_t     ActiverSelWidgets();
 void        AfficherListe(Widget w, XmStringTable items, int32_t nbItems);
 void        AfficherNbSelect(int32_t nb);
-void        AjouterCle(cleStruct cles[], int32_t pos, int32_t indDes, int32_t indCle);
-void        AjouterFiltre(int32_t indDes, int32_t indCle);
-void        AjouterNouvelleCle(char *val, int32_t len, cleStruct cles[], int32_t indDes, int32_t indCle);
+int32_t     AjouterCle(cleStruct cles[], int32_t pos, int32_t indDes, int32_t indCle);
+int32_t     AjouterFiltre(int32_t indDes, int32_t indCle);
+int32_t     AjouterNouvelleCle(char *val, int32_t len, cleStruct cles[], int32_t indDes, int32_t indCle);
 static void AjusterSensibiliteBoutons();
-void        CalculerLargeurMenus(int32_t largeurMenus[], int32_t table[][3]);
+            CalculerLargeurMenus(int32_t largeurMenus[], int32_t table[][3]);
 int32_t     ChangerWidgets();
 int32_t     ChercherCle(char *val, int32_t len, cleStruct cles[], int32_t indDes);
-int32_t     ComparerCles(const void *cleInfo1, const void *cleInfo2);
-int32_t     ComparerFiltres(const void *filtre1, const void *filtre2);
-void        DesactiverSelWidgets();
-void        EnleverFiltre(int32_t indDes, int32_t indCle);
+int32_t     ComparerCles(cleInfoStruct *cleInfo1, cleInfoStruct *cleInfo2);
+int32_t     ComparerFiltres(filtresStruct *filtre1,  filtresStruct *filtre2);
+int32_t     DesactiverSelWidgets();
+int32_t     EnleverFiltre(int32_t indDes, int32_t indCle);
 int32_t     FiltrerRecords(int32_t sel[], int32_t *nbsel, XmString **recs, cleStruct cles[], filtresStruct *filtres, int32_t nbRecs, int32_t nbDes, int32_t  nbFiltres);
-void        FreeCles(cleStruct cles[], int32_t n);
-void        Freerecs(XmString *(**recs), int32_t nbDes);
+int32_t     FreeCles(cleStruct cles[], int32_t n);
+int32_t     Freerecs(XmString *(**recs), int32_t nbDes);
 void        FreerecsAffiches(XmString **recsAffiches, int32_t nbDes);
-void        InitCles(char *tableau, int32_t  table[][3], cleStruct cles[], int32_t nbRecs, int32_t nbDes);
+int32_t     InitCles(char *tableau, int32_t  table[][3], cleStruct cles[], int32_t nbRecs, int32_t nbDes);
 int32_t     InitFiltresInfo(filtresInfoStruct filtresInfo[], filtresStruct *filtres, int32_t nbFiltres);
-void        InitRecs(XmString *(**recs), cleStruct cles[], int32_t nbRecs, int32_t nbDes);
+int32_t     InitRecs(XmString *(**recs), cleStruct cles[], int32_t nbRecs, int32_t nbDes);
 void        InitRecsAffiches(XmString **recsAffiches, char *tableau, int32_t table[][3], int32_t nbRecs);
 void        InitRecsFiltresAffiches(XmString **recsFiltresAffiches, XmString *recsAffiches, int32_t nbRecs);
-void        InitTitresMenus(char *idents[], int32_t nbDes);
-void        InitWidgetsAll1(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes);
-void        InitWidgetsAll2(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes);
-void        InitWidgetsBasic();
+int32_t     InitTitresMenus(char *idents[], int32_t nbDes);
+int32_t     InitWidgetsAll1(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes);
+int32_t     InitWidgetsAll2(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes);
+int32_t     InitWidgetsBasic();
 void        InitWidgetsBouton();
-void        InitWidgetsCallback(int32_t nbDes);
+int32_t     InitWidgetsCallback(int32_t nbDes);
 int32_t     InitWidgetsFiltre();
 void        InitWidgetsForm();
 void        InitWidgetsMenu(XmString TitresMenus[], int32_t nbDes);
-void        InitWidgetsRec(int32_t nbRecsFiltres,  int32_t nbDes);
-void        LibererPointeurs();
-void        LibererPanneauListe();
-void        MessageChargement(int32_t nbRecs1, int32_t nbRecs2);
-void        NettoyerString(char str[]);
+int32_t     InitWidgetsRec(int32_t nbRecsFiltres,  int32_t nbDes);
+int32_t     LibererPointeurs();
+int32_t     LibererPanneauListe();
+int32_t     MessageChargement(int32_t nbRecs1, int32_t nbRecs2);
+int32_t     NettoyerString(char str[]);
 static void PositionnerMenubar();
 static void TrouverLongueurMot(int32_t *longueur, XmString mot);
-Widget      TrouverWidgetParent(Window eventWindow);
-void        UpdateFiltres();
+Widget      TrouverWidgetParent();
+int32_t     UpdateFiltres();
 void        UpdateRecsFiltresAffiches(XmString **recsFiltresAffiches, XmString *recsAffiches, int32_t nbDes, int32_t sel[], int32_t nbSel);
+int32_t     XSelectstdActiver();
 int32_t     SelectstdFermer();
 Widget      XSelectstdOuvrir();
 
 int32_t XSelectstdActiver(int32_t  sel[], int32_t  *nbsel, int32_t  *indSelecteur);
-void XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t nbdes, int32_t indSel, int32_t typeSel);
-void XSelectstdFermer(int32_t  sel[], int32_t  *nbsel, char **idents, int32_t  table[][3], int32_t  *m, int32_t  *n, int32_t  *indSelecteur);
+int32_t XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t nbdes, int32_t indSel, int32_t typeSel);
+int32_t XSelectstdFermer(int32_t  sel[], int32_t  *nbsel, char **idents, int32_t  table[][3], int32_t  *m, int32_t  *n, int32_t  *indSelecteur);
 void XSelectstdInserer(char *tableau, int32_t table[][3], int32_t nbrecs);
 void XSelectstdTerminerInit(int32_t table[][3], int32_t nbrecs);
 /*===============================================================================
@@ -390,7 +388,7 @@ static void AfficherInfoFiltres(Widget w, void* unused1, void* unused2)
    XtManageChild(xs[wi].popUpShell);
    XtMapWidget(xs[wi].popUpShell);
 **/
-}
+   }
 /*======================================================================================================*/
 
 /**
@@ -398,10 +396,10 @@ static void AfficherInfoFiltres(Widget w, void* unused1, void* unused2)
 
 NOM:                    DeselectionnerRecords()
 
-FONCTION:               Desactiver tous les records qui ont ete selectionnes
+FONCTION:               Desactiver touts les records qui ont ete selectionnes
                         dans la liste des records (fichiers standards).
 
-APPELE PAR:             XtMainLoop() quand on appuie sur le bouton deselectionnerRecs.
+APPELE PAR:             XtMainLoop() quand on appuie sur le boutton deselectionnerRecs.
                         EffacerFiltres() apres qu'on a reaffiche les records.
                         panRowColSelect() apres qu'on clique sur un toggle dans un pulldown.
 
@@ -417,8 +415,10 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-static void DeselectionnerRecords(Widget w, void* unused1, void* unused2)
+static XtCallbackProc DeselectionnerRecords(Widget w, void* unused1, void* unused2)
 {
+   int32_t i; /* Compteur. */
+
    XmListDeselectAllItems(xs[wi].liste);
    xs[wi].nbRecsSelect          = 0;
    AfficherNbSelect((int32_t)0);
@@ -455,7 +455,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-static void EffacerFiltres(Widget w, void* unused1, void* unused2)
+static XtCallbackProc EffacerFiltres(Widget w, void* unused1, void* unused2)
 {
    int32_t  j;       /* Compteur.                                   */
    int32_t  nb;      /* Nombre de records affiches.                 */
@@ -465,10 +465,10 @@ static void EffacerFiltres(Widget w, void* unused1, void* unused2)
 
    InvertWidget(w);
    for (j = 0; j < xs[wi].nbRecs; j++)
-   {
-      xs[wi].indRecsFiltres[j] = j;
-      xs[wi].recsFiltresAffiches[j] = xs[wi].recsAffiches[j];
-   }
+       {
+       xs[wi].indRecsFiltres[j] = j;
+       xs[wi].recsFiltresAffiches[j] = xs[wi].recsAffiches[j];
+       }
 
    nb = xs[wi].nbRecs;
 
@@ -507,7 +507,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-static void HighlightFields(Widget  w, void* unused1, void* call_data)
+static XtCallbackProc HighlightFields(Widget  w, void* unused1, void* call_data)
 {
    int32_t                  i, j;                                      /* Compteurs.                                */
    int32_t                  numItem;                                   /* La position de l'item (de)selectionne.    */
@@ -542,7 +542,8 @@ static void HighlightFields(Widget  w, void* unused1, void* call_data)
       }
 
    AfficherNbSelect(numItem);
- 
+
+   
    }
 /*======================================================================================================*/
 
@@ -561,12 +562,13 @@ METHODE:                Rendre chaque widget de la fenetre principale Sensitive.
 
 GLOBALES AFFECTES:      Les widgets qui sont visibles dans la fenetre principale.
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void ActiverSelWidgets()
+int32_t ActiverSelWidgets()
 {
+   int32_t j;       /* Compteur.                                    */
    Arg args[5]; /* Resources des widgets qui sont utilisees.    */
    int32_t i;       /* Nombre de resources utilisees.               */
 
@@ -578,10 +580,10 @@ void ActiverSelWidgets()
    XtSetValues(xs[wi].liste, args, i);
 
    if (xs[wi].typeSelection != SELECTION_SIMPLE)
-   {
+      {
       XtSetValues(xs[wi].deselectionnerRecs, args, i); 
+      }
    }
-}
 /*======================================================================================================*/
 /**
 ********************************************************************************
@@ -634,9 +636,9 @@ APPELE PAR:             HighlightFields()
                         EffacerFiltres()
 METHODE:
 
-GLOBALES AFFECTES:      Aucune.
+GLOBALES AFFECTES:      Aucunes.
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
@@ -680,18 +682,18 @@ METHODE:                On incremente le nombre d'occurences de la cle dans cles
 
 GLOBALES AFFECTES:      xs[wi].cles[indDes].cleinfo[pos]
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOUNEE:       Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void AjouterCle(cleStruct cles[], int32_t pos, int32_t indDes, int32_t indCle)
+int32_t AjouterCle(cleStruct cles[], int32_t pos, int32_t indDes, int32_t indCle)
 {
    int32_t nbElem; /* Nombre d'elements dans la liste des indices ou la cle se trouve dans tableau[]. */
 
    nbElem                                       = ++cles[indDes].cleInfo[pos].nbOccur;
    cles[indDes].cleInfo[pos].ind                = (int32_t *)realloc(cles[indDes].cleInfo[pos].ind, nbElem*sizeof(int));
    cles[indDes].cleInfo[pos].ind[nbElem - 1]    = indCle;
-}
+   }
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -709,18 +711,18 @@ METHODE:                Seulment l'indice du descripteur et l'indice de la cle d
 GLOBALES AFFECTES:      xs[wi].filtres[xs[wi].nbFiltres]
                         xs[wi].nbFiltres
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOUNEE:       Aucune.
 
 ------------------------------------------------------------------------------*/
 
 /*indDes Indice indiquant dans quel tableau de descripteur la cle se trouve.      */
-/* indCle: Indice indiquant la position de la cle dans le tableau du descripteur.    */
-void AjouterFiltre(int32_t indDes, int32_t indCle)
+/* indCle; /* Indice indicant la position de la cle dans le tableau du descripteur.    */
+int32_t AjouterFiltre(int32_t indDes, int32_t indCle)
 {
    xs[wi].filtres[xs[wi].nbFiltres].indDes = indDes;
    xs[wi].filtres[xs[wi].nbFiltres].indCle = indCle;
    xs[wi].nbFiltres++;
-}
+   }
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -747,7 +749,7 @@ VALEUR RETOUNEE:       Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void AjouterNouvelleCle(char *val, int32_t len, cleStruct cles[], int32_t indDes, int32_t indCle)
+int32_t AjouterNouvelleCle(char *val, int32_t len, cleStruct cles[], int32_t indDes, int32_t indCle)
 {
    int32_t ClesInd; /* Le nombres de cles dans le tableau de descripteur. */
 
@@ -771,7 +773,7 @@ void AjouterNouvelleCle(char *val, int32_t len, cleStruct cles[], int32_t indDes
    cles[indDes].cleInfo[ClesInd].val[len]       = '\0';
    cles[indDes].cleInfo[ClesInd].xmVal            = XmStringCreate(cles[indDes].cleInfo[ClesInd].val,
                                                                                 XmSTRING_DEFAULT_CHARSET);
-}
+   }
 /*======================================================================================================*/
 
 /**
@@ -788,11 +790,12 @@ METHODE:                On compare le nom de la cle en question avec les noms de
                         dans le tableau du descripteur qui n'est pas ordonne.
                         Dans le cas ou la cle n'a pas ete trouvee dans le tableau,
 
-GLOBALES AFFECTES:      Aucune.
+
+GLOBALES AFFECTES:      Aucunes.
 
 VALEUR RETOURNEE:      Si la cle est trouvee, ChercherCle retourne la position
-                       dans cles[indes].cleinfo ou la cle se trouve.  Retourne
-                       -1 si la cle n'est pas trouvee.
+                        dans cles[indes].cleinfo ou la cle se trouve.  Retourne
+                        -1 si la cle n'est pas trouvee.
 
 ------------------------------------------------------------------------------*/
 
@@ -826,19 +829,19 @@ APPELE PAR:             qsort() de InitCles() quand on a fini de lire toutes les
 
 METHODE:                On fait un strcmp des deux noms.
 
-GLOBALES AFFECTES:      Aucune.
+GLOBALES AFFECTES:      Aucunes.
 
-VALEUR RETOURNEE:       Il est theoriquement impossible que deux cles soient
+VALEUR RETOURNEE:      Il est theoriquement impossible que deux cles soient
                         repetees dans la liste.  On retourne un entier negatif si
                         le premier nom precede le second, autrement on retourne un
                         entier positif.
 
 ------------------------------------------------------------------------------*/
 
-int32_t ComparerCles(const void *cleInfo1, const void *cleInfo2)
-{ 
-   return (strcmp(((cleInfoStruct*)cleInfo1)->val, ((cleInfoStruct*)cleInfo2)->val));
-}
+int32_t ComparerCles(cleInfoStruct *cleInfo1, cleInfoStruct *cleInfo2)
+{
+   return (strcmp(cleInfo1->val, cleInfo2->val));
+   }
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -853,7 +856,7 @@ APPELE PAR:             qsort() de InitFiltresInfo()
 METHODE:                On commence par comparer les descripteurs.  Si les
                         descripteurs sont egals, on compare alors les cles.
 
-GLOBALES AFFECTES:      Aucune.
+GLOBALES AFFECTES:      Aucunes.
 
 VALEUR RETOURNEE:      Il est theoriquement impossible que deux filtres soient
                         repetees dans la liste.  On retourne -1 si le premier
@@ -861,13 +864,13 @@ VALEUR RETOURNEE:      Il est theoriquement impossible que deux filtres soient
 
 ------------------------------------------------------------------------------*/
 
-int32_t ComparerFiltres(const void *filtre1, const void *filtre2)
+int32_t ComparerFiltres(filtresStruct *filtre1,  filtresStruct *filtre2)
 {
-   if (((filtresStruct*)filtre1)->indDes < ((filtresStruct*)filtre2)->indDes)
+   if (filtre1->indDes < filtre2->indDes)
       return -1;
-   else if (((filtresStruct*)filtre1)->indDes > ((filtresStruct*)filtre2)->indDes)
+   else if (filtre1->indDes > filtre2->indDes)
         return 1;
-   else if (((filtresStruct*)filtre1)->indCle < ((filtresStruct*)filtre2)->indCle)
+   else if (filtre1->indCle < filtre2->indCle)
         return -1;
    else
         return 1;
@@ -886,12 +889,13 @@ METHODE:                Rendre Insensitive touts les widgets visibles de la fene
 
 GLOBALES AFFECTES:      Les widgets visibles dans la fenetre principale.
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOURNEE:      Acune.
 
 ------------------------------------------------------------------------------*/
 
-void DesactiverSelWidgets()
+int32_t DesactiverSelWidgets()
 {
+   int32_t j;       /* Compteur.                                    */
    Arg args[5]; /* Resources des widgets qui sont utilisees.    */
    int32_t i;       /* Nombre de resources utilisees.               */
    
@@ -903,10 +907,11 @@ void DesactiverSelWidgets()
    XtSetValues(XtParent(xs[wi].liste), args, i);
 
    if (xs[wi].typeSelection != SELECTION_SIMPLE)
-   {
+      {
       XtSetValues(xs[wi].deselectionnerRecs, args, i); 
+      }
+
    }
-}
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -926,14 +931,14 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-static void EffacerFiltresSeulement(Widget w, void* u1, void* u2)
+static XtCallbackProc EffacerFiltresSeulement(Widget w, void* u1, void* u2)
 {
    int32_t i;
    
    for (i = 0; i < xs[wi].nbDes; i++)
-   {
-      if (xs[wi].cles[i].nbCles > 1)
       {
+      if (xs[wi].cles[i].nbCles > 1)
+         {
          XmListDeselectAllItems(xs[wi].panListeItems[i]);
          XmListSetPos(xs[wi].panListeItems[i], 1);
          }
@@ -962,7 +967,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void EnleverFiltre(int32_t indDes, int32_t indCle)
+int32_t EnleverFiltre(int32_t indDes, int32_t indCle)
 {
    int32_t i;         /* Compteur.                                          */
    int32_t indFiltre; /* La position du filtre dans la liste des filtres.   */
@@ -975,7 +980,7 @@ void EnleverFiltre(int32_t indDes, int32_t indCle)
 
    for (i = indFiltre; i < xs[wi].nbFiltres; i++)
       xs[wi].filtres[i] = xs[wi].filtres[i + 1];
-}
+   }
 /*======================================================================================================*/
 /**
 ************************************************************
@@ -1051,36 +1056,37 @@ METHODE:                On recupere la memoire prise par le nom de la cle,
 
 GLOBALES AFFECTES:      xs[wi].cles
 
-VALEUR RETOURNEE:       Aucune.
+VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
         
-void FreeCles(cleStruct cles[], int32_t n)
+int32_t FreeCles(cleStruct cles[], int32_t n)
 {
    int32_t i, j; /* Compteurs. */
    
    for (i = 0; i < n; i++)
-   {
-      for (j = 0; j < cles[i].nbCles; j++)
       {
+      for (j = 0; j < cles[i].nbCles; j++)
+         {
          free(cles[i].cleInfo[j].val);
          free(cles[i].cleInfo[j].ind);
          XmStringFree(cles[i].cleInfo[j].xmVal);
-         
+
          cles[i].cleInfo[j].val = NULL;
          cles[i].cleInfo[j].ind = NULL;
          cles[i].cleInfo[j].xmVal = NULL;
-      }
-      
+         }
+
       if (cles[i].cleInfo)
-      {
+         {
          free(cles[i].cleInfo);
          cles[i].cleInfo = NULL;
-      }
-      
+         }
+
       cles[i].nbCles = 0;
+      }
+
    }
-}
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -1102,7 +1108,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
         
-void LibererPointeurs()
+int32_t LibererPointeurs()
 {
    int32_t i;
    
@@ -1115,53 +1121,57 @@ void LibererPointeurs()
       XmStringFree(xs[wi].titresMenus[i]);
 
    if (xs[wi].recsFiltresAffiches)
-   {
+      {
       free(xs[wi].recsFiltresAffiches);
       xs[wi].recsFiltresAffiches = NULL;
-   }
+      }
 
    if (xs[wi].indRecsFiltres)
-   {
+      {
       free(xs[wi].indRecsFiltres);
       xs[wi].indRecsFiltres = NULL;
-   }
-   
+      }
+
    if (xs[wi].indRecsSelect)
-   {
+      {
       free(xs[wi].indRecsSelect);
       xs[wi].indRecsSelect = NULL;
-   }
+      }
 
    if (xs[wi].filtres)
-   {
+      {
       free(xs[wi].filtres);
       xs[wi].filtres = NULL;
+      }
+
    }
-}
 
 /*======================================================================================================*/
 
-void LibererPanneauListe()
+LibererPanneauListe()
 {
    int32_t i, j;
 
    for (i = 0; i < xs[wi].nbDes; i++)
-   {
-      if (xs[wi].cles[i].nbCles > 1)
       {
+      if (xs[wi].cles[i].nbCles > 1)
+         {
          XtDestroyWidget(xs[wi].panListeItems[i]);
          XtDestroyWidget(xs[wi].panLabel[i]);
          XtDestroyWidget(xs[wi].panRowCol[i]);
+         }
+      
       }
-   }
-   
+
    XtDestroyWidget(xs[wi].panListeForm);
    XtDestroyWidget(xs[wi].panRetour);
    XtDestroyWidget(xs[wi].panEffacerFiltres);
    XtDestroyWidget(xs[wi].panForme);
    XtDestroyWidget(xs[wi].panFrame);
    XtDestroyWidget(xs[wi].panListe);
-}
+   
+   
+   }
 
 /**
 ******************************************************************************
@@ -1181,19 +1191,19 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
    
-void Freerecs(XmString *(**recs), int32_t nbDes)
+int32_t Freerecs(XmString *(**recs), int32_t nbDes)
 {
    int32_t i; /* Compteur. */
    
    if (*recs)
-   {
+      {
       for (i = 0; i < nbDes; i++)
          free((*recs)[i]);
       
       free(*recs);
       *recs = NULL;
+      }
    }
-}
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -1254,47 +1264,47 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitCles(char *tableau, int32_t table[][3], cleStruct cles[], int32_t nbRecs, int32_t nbDes)
+int32_t InitCles(char *tableau, int32_t  table[][3], cleStruct cles[], int32_t nbRecs, int32_t nbDes)
 {
    int32_t  i, j;    
    int32_t  offset;  
    int32_t  len;     
    int32_t  pos;     
-   char *tempAdr;
+   unsigned char *tempAdr;
 
    char tmpStr[16];
 
    if (xs[wi].lastNbRecs == 0)
-   {
+      {
       xs[wi].nbCles = 0;
       for (i = 0; i < nbDes; i++) 
-      {
+         {
          cles[i].nbCles   = 0;
+         }
       }
-   }
-   
+
    for (i = 0; i < nbDes; i++) 
-   {
+      {
       /*      tempAdr          = (unsigned char *)(table[i][ADRESSE]); */
-      tempAdr          = tableau;
+      tempAdr          = (char *) tableau;
       tempAdr += table[i][ADRESSE];
       offset           = table[i][OFFSET];
       len              = table[i][LENGTH];
       for (j = 0; j < nbRecs; j++)
-      {
+         {
          if ((pos = ChercherCle(tempAdr, len, cles, i)) == -1)
             AjouterNouvelleCle(tempAdr, len, cles, i, j+xs[wi].lastNbRecs);
          else
             AjouterCle(cles, pos, i, j+xs[wi].lastNbRecs);
          
          tempAdr += offset;
+         }
       }
-   }
 /**
    for (i = 0; i < nbDes; i++)
       qsort((char *)cles[i].cleInfo, cles[i].nbCles, sizeof(cleInfoStruct), ComparerCles);
 **/
-}
+  }
 /*======================================================================================================*/
 /**
 ************************************************************
@@ -1387,7 +1397,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitRecs(XmString *(**recs), cleStruct cles[], int32_t nbRecs, int32_t nbDes)
+int32_t InitRecs(XmString *(**recs), cleStruct cles[], int32_t nbRecs, int32_t nbDes)
 {
    int32_t i, j, k; /* Compteurs. */
    
@@ -1396,10 +1406,11 @@ void InitRecs(XmString *(**recs), cleStruct cles[], int32_t nbRecs, int32_t nbDe
    for (i = 0; i < nbDes; i++) 
       for (j = 0; j < cles[i].nbCles; j++)
          for (k = 0; k < cles[i].cleInfo[j].nbOccur; k++)
-         {
+            {
             (*recs)[i][cles[i].cleInfo[j].ind[k]] = cles[i].cleInfo[j].xmVal;
-         }
-}
+            }
+   
+   }
 /*======================================================================================================*/
 /**
  ************************************************************
@@ -1490,14 +1501,14 @@ VALEUR RETOURNEE:      Aucune.
 ------------------------------------------------------------------------------*/
 
 static void TrouverLongueurMot(int32_t *longueur, XmString mot)
-{
-   char *text;
+{ int32_t i;
+  char *text;
 
-   /** transformer le XmString en string **/
-   auxXmToS(mot, &text);
+  /** transformer le XmString en string **/
+  XmToS(mot, &text);
 
-   /** trouver la longueur du string **/
-   *longueur = strlen(text);
+  /** trouver la longueur du string **/
+  *longueur = strlen(text);
 }
 
 /*======================================================================================================*/
@@ -1519,13 +1530,13 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitTitresMenus(char *idents[], int32_t nbDes)
+int32_t  InitTitresMenus(char *idents[], int32_t nbDes)
 {
    int32_t i; /* Compteur. */
 
    for (i = 0; i < nbDes; i++)
     {
-       xs[wi].titresMenus[i] = XmStringCreate(idents[i], XmSTRING_DEFAULT_CHARSET);
+     xs[wi].titresMenus[i] = XmStringCreate(idents[i], XmSTRING_DEFAULT_CHARSET);
     }
    
 }
@@ -1541,26 +1552,26 @@ void InitTitresMenus(char *idents[], int32_t nbDes)
  
  METHODE:
  
- GLOBALES AFFECTES:      Tous les widgets.
+ GLOBALES AFFECTES:      Touts les widgets.
  
  VALEUR RETOURNEE:      Aucune.
  **/
 
-void InitWidgetsAll1(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes)
+int32_t InitWidgetsAll1(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes)
 {
    InitWidgetsBasic();
    InitWidgetsForm();
    InitWidgetsBouton();
    
-}
+   }
 /*======================================================================================================*/
 
 
-void InitWidgetsAll2(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes)
+int32_t InitWidgetsAll2(XmString TitresMenus[], int32_t nbRecsFiltres, int32_t nbDes)
 {
    InitWidgetsMenu(TitresMenus, nbDes);
    InitWidgetsRec(nbRecsFiltres, nbDes);
-}
+   }
 /*======================================================================================================*/
 /**
  ***********************************************************************
@@ -1580,7 +1591,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitWidgetsBasic()
+int32_t InitWidgetsBasic()
 {
    Arg args[5]; /* Resources des widgets qui sont utilisees.    */
    int32_t i;       /* Nombre de resources utilisees.               */
@@ -1637,7 +1648,7 @@ void InitWidgetsBouton()
    Cardinal i;       /* Nombre de resources utilisees.              */
    int32_t          h;       /* La hauteur de boutonform.                  */
    XmString     label;   /* Le nom de chaque bouton.                    */
-   char         str[32];
+   unsigned char         str[32];
    XmFontList fontListe;
    XmString infoLabelWidth;
    int32_t largeurTexte;
@@ -1669,14 +1680,14 @@ void InitWidgetsBouton()
    /*..........................deselectionnerRecs..............................*/
    
    if (xs[wi].typeSelection != SELECTION_SIMPLE)
-   {
+      {
       i = 0;
       label = XmStringCreateLtoR(label_desact[langue], XmSTRING_DEFAULT_CHARSET);
       XtSetArg(args[i], XmNlabelString, label); i++;
       xs[wi].deselectionnerRecs = (Widget)XmCreatePushButton(xs[wi].boutonform, "desactiver items", args, i);
       XtManageChild(xs[wi].deselectionnerRecs);
       XmStringFree(label);
-   }
+      }
    
    /*..........................effacerFiltres.....................................*/
    
@@ -1705,7 +1716,7 @@ void InitWidgetsBouton()
    XtManageChild(xs[wi].infoLabel);
    
    if (xs[wi].typeSelection != SELECTION_SIMPLE)
-   {
+      {
       i = 0;
       xs[wi].nbFrame = (Widget)XmCreateFrame(xs[wi].boutonform,
                                              "label Frame",
@@ -1738,15 +1749,18 @@ void InitWidgetsBouton()
       
       /*...........................nbSel.......................................*/
       
+      }
+   
    }
-}
 
 
 /*======================================================================================================*/
 
-static void MontrerDescripteurs(Widget w, void* u1, void* u2)
+static XtCallbackProc MontrerDescripteurs(Widget w, void* u1, void* u2)
 {
+   
    AjusterPositionForme(xs[wi].panListe, xs[wi].topLevel);
+   
    
    XtUnmanageChild(xs[wi].panListe);
    XtManageChild(xs[wi].panListe);
@@ -1754,14 +1768,14 @@ static void MontrerDescripteurs(Widget w, void* u1, void* u2)
    }
 
 
-static void SelectionListeTerminee(Widget w, void* u1, void* u2)
+static XtCallbackProc SelectionListeTerminee(Widget w, void* u1, void* u2)
 {
    int32_t zero = 0;
    UpdateFiltres();
    AfficherNbSelect(zero);
    XtUnmanageChild(xs[wi].panListe);
    XtUnmapWidget(xs[wi].panListe);
- }
+   }
 
 
 /**
@@ -1791,23 +1805,26 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitWidgetsCallback(int32_t nbDes)
+int32_t InitWidgetsCallback(int32_t nbDes)
 {
-   if (xs[wi].typeSelection != SELECTION_SIMPLE)
-   {
-      XtAddCallback(xs[wi].deselectionnerRecs, XmNactivateCallback, DeselectionnerRecords, NULL);
-   }
-
-   XtAddCallback(xs[wi].effacerFiltres,  XmNactivateCallback, EffacerFiltres, NULL);
-   /*   XtAddCallback(xs[wi].liste, XmNdefaultActionCallback, Ok, NULL);  */
-   XtAddCallback(xs[wi].liste, XmNbrowseSelectionCallback, HighlightFields, NULL); 
-   XtAddCallback(xs[wi].liste, XmNmultipleSelectionCallback, HighlightFields, NULL); 
-   XtAddCallback(xs[wi].liste, XmNextendedSelectionCallback, HighlightFields, NULL); 
-   XtAddCallback(xs[wi].ok, XmNactivateCallback, Ok, NULL);
-   XtAddCallback(xs[wi].panRetour, XmNactivateCallback, SelectionListeTerminee, NULL);
-   XtAddCallback(xs[wi].panEffacerFiltres, XmNactivateCallback, EffacerFiltresSeulement, NULL);
+   int32_t i, j;  /* Compteurs.                                             */
+   int32_t index; /* Utilise pour encoder les indices de menuItems[][].     */
    
-}
+   if (xs[wi].typeSelection != SELECTION_SIMPLE)
+      {
+      XtAddCallback(xs[wi].deselectionnerRecs, XmNactivateCallback, (XtCallbackProc) DeselectionnerRecords,     NULL);
+      }
+
+   XtAddCallback(xs[wi].effacerFiltres,  XmNactivateCallback, (XtCallbackProc)EffacerFiltres,            NULL);
+   XtAddCallback(xs[wi].liste, XmNdefaultActionCallback, (XtCallbackProc)Ok,  NULL); 
+   XtAddCallback(xs[wi].liste,   XmNbrowseSelectionCallback, (XtCallbackProc) HighlightFields,  NULL); 
+   XtAddCallback(xs[wi].liste, XmNmultipleSelectionCallback,  (XtCallbackProc)HighlightFields,  NULL); 
+   XtAddCallback(xs[wi].liste, XmNextendedSelectionCallback,  (XtCallbackProc)HighlightFields,  NULL); 
+   XtAddCallback(xs[wi].ok, XmNactivateCallback, (XtCallbackProc) Ok, NULL);
+   XtAddCallback(xs[wi].panRetour, XmNactivateCallback, (XtCallbackProc) SelectionListeTerminee, NULL);
+   XtAddCallback(xs[wi].panEffacerFiltres, XmNactivateCallback, (XtCallbackProc) EffacerFiltresSeulement, NULL);
+   
+   }
 /*======================================================================================================*/
 /**
 ******************************************************************************
@@ -1881,13 +1898,13 @@ void InitWidgetsForm()
       xs[wi].fermer = (Widget)XmCreatePushButton(xs[wi].pan, "Fermer", args, i);
       XtManageChild(xs[wi].fermer);
       XmStringFree(label);
-      XtAddCallback(xs[wi].fermer, XmNactivateCallback, FermerSelecteur, NULL);
+      XtAddCallback(xs[wi].fermer, XmNactivateCallback, (XtCallbackProc) FermerSelecteur, NULL);
 
       XtSetArg(args[i], XmNtopAttachment, XmATTACH_WIDGET); i++;
       XtSetArg(args[i], XmNleftAttachment, XmATTACH_FORM); i++;
       XtSetArg(args[i], XmNrightAttachment, XmATTACH_FORM); i++;
       XtSetArg(args[i], XmNtopWidget, xs[wi].fermer); i++;
-      xs[wi].separateurBoutonFermer = (Widget)XmCreateSeparator(xs[wi].pan, "sepFermer", args, i);
+      xs[wi].separateurBoutonFermer = (Widget)XmCreateSeparator(xs[wi].pan, "Fermer", args, i);
       XtManageChild(xs[wi].separateurBoutonFermer);
       }
 
@@ -2084,7 +2101,7 @@ void InitWidgetsMenu(XmString TitresMenus[], int32_t nbDes)
       xs[wi].menus[j] = (Widget)XmCreatePushButton(xs[wi].menuform,
                                                           "menus",
                                                           args, i);
-      XtAddCallback(xs[wi].menus[j], XmNactivateCallback, MontrerDescripteurs, NULL);
+      XtAddCallback(xs[wi].menus[j],  XmNactivateCallback, MontrerDescripteurs, NULL);
       positionCourante += largeurMenus[j];
       
       }
@@ -2115,7 +2132,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void InitWidgetsRec(int32_t nbRecsFiltres,  int32_t nbDes)
+int32_t InitWidgetsRec(int32_t nbRecsFiltres,  int32_t nbDes)
 {
    Arg  args[15];       /* Resources des widgets qui sont utilisees.    */
    int32_t  i;              /* Nombre de resources utilisees.               */
@@ -2165,9 +2182,12 @@ void InitWidgetsRec(int32_t nbRecsFiltres,  int32_t nbDes)
                                         nomListe,
                                         args, i);
    XtManageChild(xs[wi].liste);
-}
 
-void MessageChargement(int32_t nbRecs1, int32_t nbRecs2)
+   }
+
+
+
+MessageChargement(int32_t nbRecs1, int32_t nbRecs2)
 {
    Arg args[10];
    int32_t i;
@@ -2176,78 +2196,78 @@ void MessageChargement(int32_t nbRecs1, int32_t nbRecs2)
    char message[32], infoMessage[32];
    
    if (nbRecs1 < 10)
-   {
+      {
       strcpy(infoMessage, "%1d/");
-   }
+      }
    else
-   {
+      {
       if (nbRecs1 < 100)
-      {
-         strcpy(infoMessage,"%2d/");
-      }
-      else
-      {
-         if (nbRecs1 < 1000)
-         {
-            strcpy(infoMessage,"%3d/");
-         }
-         else
-         {
-            if (nbRecs1 < 10000)
-            {
-               strcpy(infoMessage,"%4d/");
-            }
-            else
-            {
-               if (nbRecs1 < 100000)
-               {
-                  strcpy(infoMessage,"%5d/");
-               }
-               else
-               {
-                  strcpy(infoMessage,"%6d/");
-               }
-            }
-         }
-      }
-   }
-   
-   if (nbRecs2 < 10)
    {
-      strcat(infoMessage, "%1d");
+   strcpy(infoMessage,"%2d/");
    }
+      else
+   {
+   if (nbRecs1 < 1000)
+      {
+      strcpy(infoMessage,"%3d/");
+      }
    else
-   {
-      if (nbRecs2 < 100)
       {
-         strcat(infoMessage,"%2d");
-      }
-      else
-      {
-         if (nbRecs2 < 1000)
+      if (nbRecs1 < 10000)
          {
-            strcat(infoMessage,"%3d");
+         strcpy(infoMessage,"%4d/");
          }
-         else
+      else
          {
-            if (nbRecs2 < 10000)
-            {
-               strcat(infoMessage,"%4d");
-            }
-            else
-            {
-               if (nbRecs2 < 100000)
-               {
-                  strcat(infoMessage,"%5d");
-               }
-               else
-               {
-                  strcat(infoMessage,"%6d");
-               }
-            }
+         if (nbRecs1 < 100000)
+      {
+      strcpy(infoMessage,"%5d/");
+      }
+         else
+      {
+      strcpy(infoMessage,"%6d/");
+      }
          }
       }
    }
+      }
+      
+   if (nbRecs2 < 10)
+      {
+      strcat(infoMessage, "%1d");
+      }
+   else
+      {
+      if (nbRecs2 < 100)
+   {
+   strcat(infoMessage,"%2d");
+   }
+      else
+   {
+   if (nbRecs2 < 1000)
+      {
+      strcat(infoMessage,"%3d");
+      }
+   else
+      {
+      if (nbRecs2 < 10000)
+         {
+         strcat(infoMessage,"%4d");
+         }
+      else
+         {
+         if (nbRecs2 < 100000)
+      {
+      strcat(infoMessage,"%5d");
+      }
+         else
+      {
+      strcat(infoMessage,"%6d");
+      }
+         }
+      }
+   }
+      }
       
    sprintf(message, infoMessage, nbRecs1, nbRecs2);
    
@@ -2260,7 +2280,7 @@ void MessageChargement(int32_t nbRecs1, int32_t nbRecs2)
    
    XmStringFree(xmMessage);
 
-}
+   }
 
 /*======================================================================================================*/
 
@@ -2275,7 +2295,7 @@ APPELE PAR:             XSelectstdOuvrir().
 
 METHODE:
 
-GLOBALES AFFECTES:      Aucune.
+GLOBALES AFFECTES:      Aucunes.
 
 VALEUR RETOURNEE:      Aucune.
 
@@ -2332,13 +2352,13 @@ APPELE PAR:             xselact_()
 
 METHODE:
 
-GLOBALES AFFECTES:      Aucune.
+GLOBALES AFFECTES:      Aucunes.
 
 VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void NettoyerString(char str[])
+int32_t NettoyerString(char str[])
 {
    int32_t i, j, jinit;
    
@@ -2357,8 +2377,9 @@ void NettoyerString(char str[])
       j--;
    
    if (j < strlen(str) - 1)
+/*      str[j + 1] = NULL;*/
       str[j + 1] = '\0';
-}
+   }
 /*======================================================================================================*/
 
 /**
@@ -2381,7 +2402,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-static void Ok(Widget W, void* unused1, void* unused2)
+static XtCallbackProc Ok(Widget W, void* unused1, void* unused2)
 {
    xs[wi].StatutSelection       = SELECTION_TERMINEE;
    }
@@ -2408,7 +2429,7 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void UpdateFiltres()
+int32_t UpdateFiltres()
 {
    int32_t i,j;   /* Compteur.                        */
    int32_t res; /* Le nombre de records filtres.    */
@@ -2419,22 +2440,22 @@ void UpdateFiltres()
    xs[wi].nbFiltres = 0;
    
    for (i=0; i < xs[wi].nbDes; i++)
-   {
-      if (xs[wi].cles[i].nbCles > 1)
       {
-         if(XmListGetSelectedPos(xs[wi].panListeItems[i], &selectedItems, &numItems))
+      if (xs[wi].cles[i].nbCles > 1)
          {
-            for (j=0; j < numItems; j++)
+         if(XmListGetSelectedPos(xs[wi].panListeItems[i], &selectedItems, &numItems))
             {
+            for (j=0; j < numItems; j++)
+               {
                xs[wi].filtres[j+xs[wi].nbFiltres].indDes = i;
                xs[wi].filtres[j+xs[wi].nbFiltres].indCle = selectedItems[j] - 1;
-            }
+               }
             
             xs[wi].nbFiltres += numItems;
             free(selectedItems);
+            }
          }
       }
-   }
    
    res = FiltrerRecords(xs[wi].indRecsFiltres,
                         &(xs[wi].nbRecsFiltres),
@@ -2454,7 +2475,7 @@ void UpdateFiltres()
    nb = xs[wi].nbRecsFiltres;
    
    AfficherListe(xs[wi].liste, xs[wi].recsFiltresAffiches, nb);
-}
+   }
 /*======================================================================================================*/
 /**
 *****************************************************************************
@@ -2495,7 +2516,7 @@ METHODE:
 GLOBALES AFFECTES:
 
 VALEUR RETOURNEE:      0 quand on sort sans avoir appuye sur apply ou apply+close.
-                       1 quand on a appuye sur apply ou apply+close.
+                        1 quand on a appuye sur apply ou apply+close.
 
 ------------------------------------------------------------------------------*/
 
@@ -2504,44 +2525,44 @@ VALEUR RETOURNEE:      0 quand on sort sans avoir appuye sur apply ou apply+clos
 
 int32_t XSelectstdActiver(int32_t  sel[], int32_t  *nbsel, int32_t  *indSelecteur)
 {
-   int32_t  i;
+   int32_t    i, quitter;
    Widget widgetParent, bouton;
    
    if (!xs[wi].topLevel)
-      return 0;
+      return;
    
    xs[wi].StatutSelection = SELECTION_EN_COURS;
    while (xs[wi].StatutSelection == SELECTION_EN_COURS && XtIsRealized(xs[wi].topLevel))
-   {
+      {
       XtAppPeekEvent(SuperWidget.contexte, &(xs[wi].theEvent));
       
       switch(xs[wi].theEvent.type)
-      {
-      case ButtonPress: 
+         {
+         case ButtonPress: 
          widgetParent = TrouverWidgetParent(xs[wi].theEvent.xbutton.window);
          if (widgetParent == xs[wi].topLevel)
-         {
+            {
             XtAppNextEvent(SuperWidget.contexte, &(xs[wi].theEvent));
             XtDispatchEvent(&(xs[wi].theEvent));
-         }
+            }
          else
-         {
-            if (XtIsRealized(xs[wi].panListe))
             {
+            if (XtIsRealized(xs[wi].panListe))
+               {
                XtUnmanageChild(xs[wi].panListe);
                ActiverSelWidgets();
-            }
+               }
             *nbsel = 0;
             return 0;
-         }
+            }
          break;
          
-      default:
+         default:
          XtAppNextEvent(SuperWidget.contexte, &(xs[wi].theEvent));
          XtDispatchEvent(&(xs[wi].theEvent));
          break;
+         }
       }
-   }
    
    *nbsel = xs[wi].nbRecsSelect;
    
@@ -2549,7 +2570,7 @@ int32_t XSelectstdActiver(int32_t  sel[], int32_t  *nbsel, int32_t  *indSelecteu
       sel[i] = xs[wi].indRecsSelect[i];
    
    return(xs[wi].StatutSelection);
-}
+   }
 /**
 ************************************************************
 
@@ -2567,13 +2588,13 @@ VALEUR RETOURNEE:      Aucune.
 
 ------------------------------------------------------------------------------*/
 
-void XSelectstdFermer(int32_t  sel[], int32_t  *nbsel, char **idents, int32_t  table[][3], int32_t  *m, int32_t  *n, int32_t  *indSelecteur)
+int32_t XSelectstdFermer(int32_t  sel[], int32_t  *nbsel, char **idents, int32_t  table[][3], int32_t  *m, int32_t  *n, int32_t  *indSelecteur)
 {
    XtUnmapWidget(xs[wi].topLevel);
    XFlush(XtDisplay(xs[wi].topLevel));
    XtDestroyWidget(xs[wi].topLevel);
    LibererPointeurs();
-}
+   }
 /*======================================================================================================*/
 /*======================================================================================================**
  **                                                                                                      **
@@ -2581,7 +2602,7 @@ void XSelectstdFermer(int32_t  sel[], int32_t  *nbsel, char **idents, int32_t  t
  **                                                                                                      **
  **======================================================================================================*/
 
-void CalculerLargeurMenus(int32_t largeurMenus[], int32_t table[][3])
+CalculerLargeurMenus(int32_t largeurMenus[], int32_t table[][3])
 {
    int32_t i,j;
    XmFontList fontListe;
@@ -2610,15 +2631,17 @@ void CalculerLargeurMenus(int32_t largeurMenus[], int32_t table[][3])
 
    for (i=1; i < 32; i++)
       XmStringFree(labelBidon[i]);
-}
+   
+   }
 
 /**
  ************************************************************
  ************************************************************
  **/
 
-int f77name(xseloup)(char *titre, int32_t  *nbrecs, char idents[], int32_t *nbdes, int32_t *indSel, int32_t *typeSel, F2Cl lenNomFich, F2Cl lenIdents)
+f77name(xseloup)(char *titre, int32_t  *nbrecs, char idents[], int32_t *nbdes, int32_t *indSel, int32_t *typeSel, F2Cl lenNomFich, F2Cl lenIdents)
 {
+   
    int32_t  i,j,k;
    char tmp;
    char **identsMenus;
@@ -2638,19 +2661,17 @@ int f77name(xseloup)(char *titre, int32_t  *nbrecs, char idents[], int32_t *nbde
       free(identsMenus[i]);
    free(identsMenus);
    return 0;
-}
+   }
 
-int32_t f77name(xselins)(char *tableau, int32_t table[][3], int32_t *nbrecs, F2Cl lentableau)
+f77name(xselins)(char *tableau, int32_t table[][3], int32_t *nbrecs, F2Cl lentableau)
 {
    XSelectstdInserer(tableau, table, *nbrecs);
-   return 0;
-}
+   }
 
-int32_t f77name(xselouf)(int32_t table[][3], int32_t *nbrecs)
+f77name(xselouf)(int32_t table[][3], int32_t *nbrecs)
 {
    XSelectstdTerminerInit(table, *nbrecs);
-   return 0;
-}
+   }
 
 
 /**
@@ -2722,7 +2743,7 @@ int32_t f77name(xselfer)(int32_t sel[], int32_t *nbsel, char idents[], int32_t t
       free(identsMenus[i]);
    free(identsMenus);
    return 0;
-}
+   }
 /*======================================================================================================*/
 
 /**
@@ -2745,13 +2766,12 @@ VALEUR  RETOURNEE:      0
 int32_t f77name(xselupd)()
 {
    LibererPointeurs();
-   return 0;
-}
+   }
 
 
 
 /*======================================================================================================*/
-void XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t nbdes, int32_t indSel, int32_t typeSel)
+int32_t XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t nbdes, int32_t indSel, int32_t typeSel)
 {
    int32_t i;
 
@@ -2768,23 +2788,23 @@ void XSelectstdCommencerInit(char *titre, int32_t nbrecs, char **idents, int32_t
    InitTitresMenus(idents, xs[wi].nbDes);
 
    if (nbrecs > 0)
-   {
+      {
       xs[wi].indRecsFiltres        = (int32_t *)calloc(xs[wi].nbRecs, sizeof(int));
       xs[wi].indRecsSelect         = (int32_t *)calloc(xs[wi].nbRecs, sizeof(int));
       xs[wi].recsAffiches          = (XmString *)calloc(nbrecs, sizeof(XmString));
-      xs[wi].recs                  = (XmString **)malloc(nbdes * sizeof(XmString *)); // ensuite initialisé dans la boucle ci-dessous
-
+      xs[wi].recs                  = (XmString **)calloc(nbdes, sizeof(XmString *)); 
+      
       for (i = 0; i < nbdes; i++) 
          xs[wi].recs[i] = (XmString *)calloc(nbrecs, sizeof(XmString));
-   }
+      }
    else
-   {
+      {
       xs[wi].indRecsFiltres        = NULL;
       xs[wi].indRecsSelect         = NULL;
       xs[wi].recsAffiches          = NULL;
       xs[wi].recs                  = NULL;
+      }
    }
-}
 
 void XSelectstdInserer(char *tableau, int32_t table[][3], int32_t nbrecs)
 {
@@ -2822,7 +2842,7 @@ void XSelectstdInserer(char *tableau, int32_t table[][3], int32_t nbrecs)
 
    sprintf(message, messString[lng], xs[wi].lastNbRecs, xs[wi].nbRecs);
    MessageChargement(xs[wi].lastNbRecs, xs[wi].nbRecs);
-}
+   }
 
 void XSelectstdTerminerInit(int32_t table[][3], int32_t nbrecs)
 {
@@ -2831,9 +2851,9 @@ void XSelectstdTerminerInit(int32_t table[][3], int32_t nbrecs)
    Colormap cmap;
 
    for (i = 0; i < xs[wi].nbRecs; i++)
-   {
+      {
       xs[wi].indRecsFiltres[i] = i;
-   }
+      }
 
    for (i = 0; i < xs[wi].nbDes; i++)
       qsort((char *)xs[wi].cles[i].cleInfo, xs[wi].cles[i].nbCles, sizeof(cleInfoStruct), ComparerCles);
@@ -2864,18 +2884,17 @@ void XSelectstdTerminerInit(int32_t table[][3], int32_t nbrecs)
    XtSetValues(xs[wi].topLevel, args, i);
    XtSetValues(xs[wi].panListe, args, i);
 **/   
-}
+   }
 
 /***
 *************************
 *************************
 ***/
 
-int32_t f77name(xseldim)()
+f77name(xseldim)()
 {
    DesactiverSelWidgets();
-   return 0;
-}
+   }
 
 /***
 *************************
@@ -2885,62 +2904,57 @@ int32_t f77name(xseldim)()
 int32_t f77name(xselundim)()
 {
    ActiverSelWidgets();
-   return 0;
-}
+   }
 
 /***
 *************************
 *************************
 ***/
 
-int32_t f77name(xselup)(int32_t *indSelecteur)
+f77name(xselup)(int32_t *indSelecteur)
 {
    XtRealizeWidget(xs[*indSelecteur].topLevel);
-   return 0;
-}
+   }
 
 /**
 ********
 ********
 **/
 
-int32_t c_xselup(int32_t indSelecteur)
+c_xselup(int32_t indSelecteur)
 {
    XtRealizeWidget(xs[indSelecteur].topLevel);
-   return 0;
-}
+   }
 
 /***
 *************************
 *************************
 ***/
 
-int32_t f77name(xseldown)(int32_t *indSelecteur)
+f77name(xseldown)(int32_t *indSelecteur)
 {
    XtUnrealizeWidget(xs[*indSelecteur].topLevel);
-   return 0;
-}
+   }
 
 /**
 ********
 ********
 **/
 
-int32_t c_xseldown(int32_t indSelecteur)
+c_xseldown(int32_t indSelecteur)
 {
    XtRealizeWidget(xs[indSelecteur].topLevel);
-   return 0;
-}
+   }
 
 /***
 *************************
 *************************
 ***/
 
-static void FermerSelecteur(Widget w, void* unused1, void* unused2)
+static XtCallbackProc FermerSelecteur(Widget w, void* unused1, void* unused2)
 {
    XtUnrealizeWidget(xs[wi].topLevel);
-}
+   }
 
 /***
 *************************
@@ -2956,25 +2970,19 @@ int32_t f77name(xselopt)(int32_t *indSelecteur, char option[], char valeur[], F2
    NettoyerString(option);
    NettoyerString(valeur);
    c_xselopt(*indSelecteur, option, valeur);
-   return 0;
-}
+   }
 
 int32_t c_xselopt(int32_t indSelecteur, char *option, char *valeur)
 {
-   if (!strcmp(option, "bouton_fermer") || !strcmp(option, "BOUTON_FERMER"))
-   {
-      if (!strcmp(valeur, "oui") || !strcmp(valeur, "OUI"))
+   if (0 == strcmp(option, "bouton_fermer") || 0 == strcmp(option, "BOUTON_FERMER"))
       {
-         xs[indSelecteur].statutBoutonFermer = BOUTON_FERMER_ACTIF;
-      }
+      if (0 == strcmp(valeur, "oui") || 0 == strcmp(valeur, "OUI"))
+   xs[indSelecteur].statutBoutonFermer = BOUTON_FERMER_ACTIF;
       else
-      {
-         xs[indSelecteur].statutBoutonFermer = BOUTON_FERMER_INACTIF;
+   xs[indSelecteur].statutBoutonFermer = BOUTON_FERMER_INACTIF;
+      return;
       }
+   
+   printf("Mauvaise option: %s\n", option);
    }
-   else
-   {
-      printf("Mauvaise option: %s\n", option);
-   }
-   return 0;
-}
+

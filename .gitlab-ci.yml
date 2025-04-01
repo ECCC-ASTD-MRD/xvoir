@@ -20,7 +20,6 @@ deploy:staging:
    stage: deploy
    only:
       - master
-      - alpha
       - tags
       - dev
       - alpha

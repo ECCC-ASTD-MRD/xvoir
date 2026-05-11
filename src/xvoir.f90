@@ -63,7 +63,8 @@ program xvoir
       logical styleflag
       
       character(len=16)   CLE(41)
-      character(len=128) DEF(41), VAL(41)
+! 4096 = PATH_MAX
+      character(len=4096) DEF(41), VAL(41) 
 ! Vérifier la pertinence, car xvoir ne semble pas pouvoir traiter plusieurs fichiers
       integer lnkdiun(40)
 !

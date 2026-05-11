@@ -59,7 +59,8 @@
       logical styleflag
       
       character(len=16)   CLE(41)
-      character(len=128) DEF(41), VAL(41)
+! 4096 = PATH_MAX
+      character(len=4096) DEF(41), VAL(41) 
       integer lnkdiun(40)
 !
       DATA CLE/40*'iment.', 'style'/

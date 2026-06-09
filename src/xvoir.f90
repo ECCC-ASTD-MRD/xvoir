@@ -17,13 +17,24 @@
 ! * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ! * Boston, MA 02111-1307, USA.
 ! */
-      program xvoir
+program xvoir
+#if defined(HAVE_FST24)
+      use app
+      use rmn_fst24
+#endif
       IMPLICIT NONE
 
       integer maxrecs
       parameter (MAXRECS= 24576)
       integer liste(24576)
       
+#if defined(HAVE_FST24)
+      type(fst_file), dimension(41) :: sources
+      logical        :: success
+#else
+      INTEGER nrecs
+#endif
+
       INTEGER BUF(1)
       INTEGER IPTAB
       REAL    ASPRAT
@@ -33,13 +44,12 @@
       character(len=1) grtyp,cdatyp
       character(len=12) etiket
       character(len=158) titre
-
       
       INTEGER KEY, DATE0, DEET, NPAS, NI, NJ, NK, NBITS, DATYP 
       INTEGER IP1, IP2, IP3, SWA, LNG, DLTF, UBC
       INTEGER IG1, IG2, IG3, IG4, EXTRA1, EXTRA2, EXTRA3
       INTEGER FSTOUV, FSTINF, fstinl, FSTLUK, FSTPRM, FSTSUI 
-      INTEGER FNOM, FSTFRM, RES, nrecs, nbrecs, niun
+      INTEGER FNOM, FSTFRM, RES, nbrecs, niun
       integer selrec
       integer xconouv, xinit
       integer xfslvoir2000, xfslactv, xselopt, xselup
@@ -61,6 +71,7 @@
       character(len=16)   CLE(41)
 ! 4096 = PATH_MAX
       character(len=4096) DEF(41), VAL(41) 
+! Vérifier la pertinence, car xvoir ne semble pas pouvoir traiter plusieurs fichiers
       integer lnkdiun(40)
 !
       DATA CLE/40*'iment.', 'style'/
@@ -90,12 +101,36 @@
       endif
 
       niun = niun -1
+#if defined(HAVE_FST24)
+      do i=1, niun
+         ! REMOTE?
+         success = sources(i)%open(trim(val(i)),'STD+R/O')
+         if (.not. success) then
+            call app_log(APP_ERROR,'Probleme d''ouverture avec le fichier '//trim(val(i)))
+            app_status=app_end(-1)
+            call qqexit(app_status)
+         endif
+      enddo
+
+      if (.not. fst24_link(sources(1:niun))) then
+         call app_log(APP_ERROR, 'Unable to link source files')
+      endif
+
+      nbrecs = sources(1)%get_num_records()
+
+      option = 'bouton_fermer'
+      valeur = 'oui'
+      ier = xselopt(lnkdiun(1), option, valeur)
+      ier = xfslvoir2000(nomfich, sources(1), nbrecs, 1, 2,styleflag)
+ 1000 inf = xfslactv(recs, nbrecs, 1)
+      ier = xselup(1)
+#else
       do 34 i=1, niun
          IER = FNOM(lnkdiun(i),val(i),'RND+OLD+R/O',0)
          if (ier.lt. 0) then
-            print *, '***********************************************'
-            print *, '* Probleme d''ouverture avec le fichier ',val(i)
-            print *, '************************************************'
+            print *, '******************************************************'
+            print *, '* Probleme d''ouverture avec le fichier ',trim(val(i))
+            print *, '******************************************************'
             stop
          endif
  34   continue
@@ -105,9 +140,9 @@
       do 35 i=1,niun
          ier = FSTOUV(lnkdiun(i), 'RND')
          if (ier.lt.0) then
-            print *, '**********************************************'
-            print *, '* Le fichier #',val(i), 'n''est pas standard random'
-            print *, '**********************************************'
+            print *, '***********************************************************'
+            print *, '* Le fichier "',trim(val(i)), '" n''est pas standard random'
+            print *, '***********************************************************'
             stop
          endif
          call get_nbrecs_actifs(nrecs, lnkdiun(i))
@@ -124,6 +159,7 @@
       ier = xfslvoir2000(nomfich, iun, nbrecs, 1, 2,styleflag)
  1000 inf = xfslactv(recs, nbrecs, 1)
       ier = xselup(1)
+#endif
 
 !      do 100 i=1,nbrecs
 ! 100     print *, i, recs(i)
@@ -132,7 +168,12 @@
  4    format(3i16)
  5    format('Fichier: ', 100a)
  6    format(72a)
+#if defined(HAVE_FST24)
+      ! fermer le fichier et terminer
+      success = sources(i)%close()
+#else
       IER = FSTFRM(1)
+#endif
 
       STOP
       END

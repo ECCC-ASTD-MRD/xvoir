@@ -1,8 +1,18 @@
+#if defined(HAVE_FST24)
+integer function xfslvoir2000(nomfich, sources, ttlrecs, winind, typesel, styleflag)
+  use rmn_fst24
+#else
 integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
+#endif
   implicit none
-  integer ttlrecs,ntmrecs
   character(len=128) nomfich
-  integer iun, winind, typesel
+#if defined(HAVE_FST24)
+  type(fst_file) :: sources
+#else
+  integer iun
+#endif
+  integer ttlrecs,ntmrecs
+  integer winind, typesel
   logical styleflag
   
 #include "xfsl-voir.cdk"
@@ -22,6 +32,13 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   real xg1, xg2, xg3, xg4
   integer yyyymmdd,hhmmssss
   
+#if defined(HAVE_FST24)
+  type(fst_record) :: mon_enregistrement
+  type(fst_query)  :: ma_requete
+  logical :: succes
+  integer :: num_records
+#endif
+
   integer ier
   integer kind
   real p
@@ -50,6 +67,43 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
   
   i = 0
   ntmrecs = i
+#if defined(HAVE_FST24)
+  !ier = fstrwd(iun)
+  !key = fstinf(iun, ni, nj, nk,  -1, ' ', -1, -1, -1, ' ', ' ')
+  ! Boucler sur tous les enregistrements
+  ma_requete = sources % new_query() ! aucun critère de sélection
+
+  !do while (key.ge.0)
+  do while (ma_requete % find_next(mon_enregistrement))
+    succes = mon_enregistrement % read() ! lire du disque
+
+    i = i+1
+    key = i
+
+    call get_cdatyp(cdatyp, mon_enregistrement % data_type)
+    call newdate(mon_enregistrement % dateo,yyyymmdd,hhmmssss,-3)
+    hhmmssss = hhmmssss / 100
+
+    ! Récupérer les valeurs de cet enregistrement
+    nomvar = mon_enregistrement % nomvar
+    typvar = mon_enregistrement % typvar
+    ip1 = mon_enregistrement % ip1
+    ip2 = mon_enregistrement % ip2
+    ip3 = mon_enregistrement % ip3
+    etiket = mon_enregistrement % etiket
+    deet = mon_enregistrement % deet
+    npas = mon_enregistrement % npas
+    grtyp = mon_enregistrement % grtyp
+    ig1 = mon_enregistrement % ig1
+    ig2 = mon_enregistrement % ig2
+    ig3 = mon_enregistrement % ig3
+    ig4 = mon_enregistrement % ig4
+!    nbits = mon_enregistrement % dasiz
+    nbits = mon_enregistrement % pack_bits
+    ni = mon_enregistrement % ni
+    nj = mon_enregistrement % nj
+    nk = mon_enregistrement % nk
+#else
   !rewind
   ! FIXME: fstrwd donne un message "(WARNING) FST|c_fstrwd_xdf: file (unit=1) is not sequential"
   ier = fstrwd(iun)
@@ -67,10 +121,13 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     !FORMATS: PRINTABLE DATE, CMC DATE-TIME STAMP, TRUE DATE
     call newdate(date0,yyyymmdd,hhmmssss,-3)
     hhmmssss = hhmmssss / 100
+#endif
     
     if (.not.styleflag) then
       write(tableau(mod(i-1,64)), 10) NOMVAR, TYPVAR, IP1, IP2, IP3, NI, NJ, NK, ETIKET, &
              yyyymmdd,hhmmssss, deet, npas, grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
+      ! debug pour vérifier l'output
+      ! WRITE(2000,*) '@;tableau1 ', i,tableau(mod(i-1,64))
     else
       call convip_plus( ip1, p, kind, -1, string, .true.)
       if (grtyp.ne.'Z'.and.grtyp.ne.'Y') then
@@ -89,6 +146,8 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
           write(tableau(mod(i-1,64)), 12) NOMVAR,TYPVAR, adjustr(string),IP2,IP3,NI, NJ, NK, ETIKET, &
             yyyymmdd,hhmmssss, deet, npas,grtyp, ig1, ig2, ig3, ig4, cdatyp, nbits
       endif
+      ! debug pour vérifier l'output
+      ! WRITE(2000,*) '@;tableau2 ', i,tableau(mod(i-1,64))
     endif
     
     reclist(i) = key
@@ -105,13 +164,25 @@ integer function xfslvoir2000(nomfich, iun, ttlrecs, winind, typesel, styleflag)
     if (0.eq.mod(i,64).or.i.eq.ttlrecs) then
       res = xselins(tableau,table,ntmrecs)
     endif
+#if defined(HAVE_FST24)
+#else
 !   
 !   goto 50
 ! 100 continue
     ! TROUVER L' ENREGISTREMENT SUIVANT
     key = fstsui(iun, ni, nj, nk)
+#endif
   enddo
+
+#if defined(HAVE_FST24)
+  ! Libérer la requête
+  call ma_requete % free()
+#endif
+
 100  res = xselouf(table, ntmrecs)
+! debug pour vérifier l'output
+!  close(2000)
+
   xfslvoir2000 = winind
   
 2 format(40a)
@@ -215,7 +286,6 @@ integer function xfslactv(slkeys, nslkeys, winind)
      
      integer reclen(20)
      data reclen /5,3,13,13,13,7,7,7,13,9,7,6,8,2,10,10,10,10,3,0/
-     
      
      sumlen       = 0
      do i=1,20

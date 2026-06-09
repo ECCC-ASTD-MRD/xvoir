@@ -31,6 +31,10 @@ if (NOT rmn_FOUND)
    find_package(rmn ${rmn_REQ_VERSION} REQUIRED)
 endif()
 
+if(rmn_REQ_VERSION VERSION_GREATER_EQUAL 20.1)
+  add_compile_definitions(HAVE_FST24)
+endif()
+
 add_subdirectory(src)
 
 #----- Packaging

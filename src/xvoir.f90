@@ -128,9 +128,9 @@ program xvoir
       do 34 i=1, niun
          IER = FNOM(lnkdiun(i),val(i),'RND+OLD+R/O',0)
          if (ier.lt. 0) then
-            print *, '***********************************************'
-            print *, '* Probleme d''ouverture avec le fichier ',val(i)
-            print *, '************************************************'
+            print *, '******************************************************'
+            print *, '* Probleme d''ouverture avec le fichier ',trim(val(i))
+            print *, '******************************************************'
             stop
          endif
  34   continue
@@ -140,9 +140,9 @@ program xvoir
       do 35 i=1,niun
          ier = FSTOUV(lnkdiun(i), 'RND')
          if (ier.lt.0) then
-            print *, '**********************************************'
-            print *, '* Le fichier #',val(i), 'nest pas standard random'
-            print *, '**********************************************'
+            print *, '***********************************************************'
+            print *, '* Le fichier "',trim(val(i)), '" n''est pas standard random'
+            print *, '***********************************************************'
             stop
          endif
          call get_nbrecs_actifs(nrecs, lnkdiun(i))
